@@ -19,9 +19,7 @@ export interface GetUserDocumentsOutput {
 export class GetUserDocuments {
   constructor(private readonly documentRepository: IDocumentRepository) {}
 
-  async execute(
-    input: GetUserDocumentsInput
-  ): Promise<GetUserDocumentsOutput> {
+  async execute(input: GetUserDocumentsInput): Promise<GetUserDocumentsOutput> {
     const documents = await this.documentRepository.findByUserId(input.userId);
 
     documents.sort((a, b) => {
@@ -34,4 +32,3 @@ export class GetUserDocuments {
     return { documents };
   }
 }
-

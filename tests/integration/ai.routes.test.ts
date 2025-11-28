@@ -22,18 +22,29 @@ const mockAIService: IAIServicePort = {
 
 beforeAll(() => {
   if (container.isBound('IAIServicePort')) {
-    container.rebind<IAIServicePort>('IAIServicePort').toConstantValue(mockAIService);
+    container
+      .rebind<IAIServicePort>('IAIServicePort')
+      .toConstantValue(mockAIService);
   } else {
-    container.bind<IAIServicePort>('IAIServicePort').toConstantValue(mockAIService);
+    container
+      .bind<IAIServicePort>('IAIServicePort')
+      .toConstantValue(mockAIService);
   }
 });
 
 describe('AI API Routes', () => {
-  async function createUserWithDocument(): Promise<{ token: string; documentId: string }> {
+  async function createUserWithDocument(): Promise<{
+    token: string;
+    documentId: string;
+  }> {
     const credentials = { email: uniqueEmail('ai'), password: 'SecurePass123' };
 
-    const registerResponse = await RegisterRoute(createJsonRequest('/api/auth/register', 'POST', credentials));
-    const registerBody = await parseJson<{ data: { token: string } }>(registerResponse);
+    const registerResponse = await RegisterRoute(
+      createJsonRequest('/api/auth/register', 'POST', credentials)
+    );
+    const registerBody = await parseJson<{ data: { token: string } }>(
+      registerResponse
+    );
 
     const styleId = await getAnyStyleId();
 
@@ -48,12 +59,19 @@ describe('AI API Routes', () => {
 
     if (createDocResponse.status !== 201) {
       const errorText = await createDocResponse.text();
-      throw new Error(`Document creation failed (${createDocResponse.status}): ${errorText}`);
+      throw new Error(
+        `Document creation failed (${createDocResponse.status}): ${errorText}`
+      );
     }
 
-    const createDocBody = await parseJson<{ data: { document: { id: string } } }>(createDocResponse);
+    const createDocBody = await parseJson<{
+      data: { document: { id: string } };
+    }>(createDocResponse);
 
-    return { token: registerBody.data.token, documentId: createDocBody.data.document.id };
+    return {
+      token: registerBody.data.token,
+      documentId: createDocBody.data.document.id,
+    };
   }
 
   it("retourne des suggestions d'analyse syntaxique", async () => {
@@ -75,7 +93,8 @@ describe('AI API Routes', () => {
     }>(response);
 
     expect(body.data.analysis.suggestions).toContain('Parfait !');
-    expect((mockAIService.analyzeSyntax as jest.Mock).mock.calls.length).toBeGreaterThan(0);
+    expect(
+      (mockAIService.analyzeSyntax as jest.Mock).mock.calls.length
+    ).toBeGreaterThan(0);
   });
 });
-

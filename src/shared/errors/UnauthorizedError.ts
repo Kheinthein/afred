@@ -9,4 +9,3 @@ export class UnauthorizedError extends AppError {
     Object.setPrototypeOf(this, UnauthorizedError.prototype);
   }
 }
-

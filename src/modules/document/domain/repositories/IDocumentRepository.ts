@@ -37,4 +37,3 @@ export interface IDocumentRepository {
     orders: Array<{ id: string; sortOrder: number }>
   ): Promise<void>;
 }
-

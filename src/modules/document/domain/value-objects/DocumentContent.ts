@@ -10,7 +10,9 @@ export class DocumentContent {
 
   constructor(text: string) {
     if (text === null || text === undefined) {
-      throw new ValidationError('Le contenu ne peut pas être null ou undefined');
+      throw new ValidationError(
+        'Le contenu ne peut pas être null ou undefined'
+      );
     }
 
     this.text = text;
@@ -52,4 +54,3 @@ export class DocumentContent {
     return this.text;
   }
 }
-

@@ -7,10 +7,12 @@ import { DOCUMENT_TITLE_MAX_LENGTH } from '@shared/constants';
 export const UpdateDocumentDTOSchema = z.object({
   title: z
     .string()
-    .max(DOCUMENT_TITLE_MAX_LENGTH, `Le titre ne doit pas dépasser ${DOCUMENT_TITLE_MAX_LENGTH} caractères`)
+    .max(
+      DOCUMENT_TITLE_MAX_LENGTH,
+      `Le titre ne doit pas dépasser ${DOCUMENT_TITLE_MAX_LENGTH} caractères`
+    )
     .optional(),
   content: z.string().optional(),
 });
 
 export type UpdateDocumentDTO = z.infer<typeof UpdateDocumentDTOSchema>;
-

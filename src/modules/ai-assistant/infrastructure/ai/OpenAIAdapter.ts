@@ -26,7 +26,8 @@ export class OpenAIAdapter implements IAIServicePort {
       messages: [
         {
           role: 'system',
-          content: 'Tu es un expert en correction de textes français. Retourne uniquement du JSON valide.',
+          content:
+            'Tu es un expert en correction de textes français. Retourne uniquement du JSON valide.',
         },
         {
           role: 'user',
@@ -52,7 +53,8 @@ export class OpenAIAdapter implements IAIServicePort {
       messages: [
         {
           role: 'system',
-          content: 'Tu es un expert en analyse littéraire. Retourne uniquement du JSON valide.',
+          content:
+            'Tu es un expert en analyse littéraire. Retourne uniquement du JSON valide.',
         },
         {
           role: 'user',
@@ -74,7 +76,7 @@ export class OpenAIAdapter implements IAIServicePort {
     context?: string
   ): Promise<ProgressionSuggestionResult> {
     const contextStr = context ? ` Contexte: ${context}` : '';
-    
+
     const response = await this.client.chat.completions.create({
       model: this.model,
       messages: [
@@ -111,4 +113,3 @@ export class OpenAIAdapter implements IAIServicePort {
     return response.choices[0].message.content || '';
   }
 }
-

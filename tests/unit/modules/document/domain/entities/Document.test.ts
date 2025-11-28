@@ -55,7 +55,9 @@ describe('Document Entity', () => {
 
         expect(doc.content).toBe(newContent);
         expect(doc.version).toBe(2);
-        expect(doc.updatedAt.getTime()).toBeGreaterThanOrEqual(beforeUpdate.getTime());
+        expect(doc.updatedAt.getTime()).toBeGreaterThanOrEqual(
+          beforeUpdate.getTime()
+        );
       }, 1);
     });
 
@@ -217,4 +219,3 @@ describe('Document Entity', () => {
     });
   });
 });
-

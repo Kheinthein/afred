@@ -84,7 +84,9 @@ container
 container
   .bind<CreateDocument>(CreateDocument)
   .toDynamicValue((context) => {
-    const docRepo = context.container.get<IDocumentRepository>('IDocumentRepository');
+    const docRepo = context.container.get<IDocumentRepository>(
+      'IDocumentRepository'
+    );
     return new CreateDocument(docRepo);
   })
   .inTransientScope();
@@ -92,7 +94,9 @@ container
 container
   .bind<UpdateDocument>(UpdateDocument)
   .toDynamicValue((context) => {
-    const docRepo = context.container.get<IDocumentRepository>('IDocumentRepository');
+    const docRepo = context.container.get<IDocumentRepository>(
+      'IDocumentRepository'
+    );
     return new UpdateDocument(docRepo);
   })
   .inTransientScope();
@@ -100,7 +104,9 @@ container
 container
   .bind<DeleteDocument>(DeleteDocument)
   .toDynamicValue((context) => {
-    const docRepo = context.container.get<IDocumentRepository>('IDocumentRepository');
+    const docRepo = context.container.get<IDocumentRepository>(
+      'IDocumentRepository'
+    );
     return new DeleteDocument(docRepo);
   })
   .inTransientScope();
@@ -108,7 +114,9 @@ container
 container
   .bind<GetUserDocuments>(GetUserDocuments)
   .toDynamicValue((context) => {
-    const docRepo = context.container.get<IDocumentRepository>('IDocumentRepository');
+    const docRepo = context.container.get<IDocumentRepository>(
+      'IDocumentRepository'
+    );
     return new GetUserDocuments(docRepo);
   })
   .inTransientScope();
@@ -116,7 +124,9 @@ container
 container
   .bind<ReorderDocuments>(ReorderDocuments)
   .toDynamicValue((context) => {
-    const docRepo = context.container.get<IDocumentRepository>('IDocumentRepository');
+    const docRepo = context.container.get<IDocumentRepository>(
+      'IDocumentRepository'
+    );
     return new ReorderDocuments(docRepo);
   })
   .inTransientScope();
@@ -125,9 +135,13 @@ container
 container
   .bind<AnalyzeText>(AnalyzeText)
   .toDynamicValue((context) => {
-    const docRepo = context.container.get<IDocumentRepository>('IDocumentRepository');
+    const docRepo = context.container.get<IDocumentRepository>(
+      'IDocumentRepository'
+    );
     const aiService = context.container.get<IAIServicePort>('IAIServicePort');
-    const aiAnalysisRepo = context.container.get<IAIAnalysisRepository>('IAIAnalysisRepository');
+    const aiAnalysisRepo = context.container.get<IAIAnalysisRepository>(
+      'IAIAnalysisRepository'
+    );
     return new AnalyzeText(docRepo, aiService, aiAnalysisRepo);
   })
   .inTransientScope();
@@ -137,10 +151,10 @@ container
   .bind<UserService>(UserService)
   .toDynamicValue((context) => {
     const createUser = context.container.get<CreateUser>(CreateUser);
-    const authenticateUser = context.container.get<AuthenticateUser>(AuthenticateUser);
+    const authenticateUser =
+      context.container.get<AuthenticateUser>(AuthenticateUser);
     return new UserService(createUser, authenticateUser);
   })
   .inSingletonScope();
 
 export { container };
-

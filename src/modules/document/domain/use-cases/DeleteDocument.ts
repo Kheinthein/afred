@@ -27,7 +27,7 @@ export class DeleteDocument {
     // 2. Vérifier les permissions
     if (document.userId !== input.userId) {
       throw new UnauthorizedError(
-        'Vous n\'avez pas la permission de supprimer ce document'
+        "Vous n'avez pas la permission de supprimer ce document"
       );
     }
 
@@ -35,4 +35,3 @@ export class DeleteDocument {
     await this.documentRepository.delete(input.documentId);
   }
 }
-

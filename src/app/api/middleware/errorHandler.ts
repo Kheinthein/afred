@@ -58,4 +58,3 @@ export function handleError(error: unknown): NextResponse {
     { status: 500 }
   );
 }
-

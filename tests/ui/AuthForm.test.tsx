@@ -34,40 +34,59 @@ describe('AuthForm', () => {
     fireEvent.submit(screen.getByRole('button', { name: /se connecter/i }));
 
     expect(await screen.findByText(/Email invalide/i)).toBeInTheDocument();
-    expect(await screen.findByText(/Mot de passe trop court/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Mot de passe trop court/i)
+    ).toBeInTheDocument();
     expect(mockLogin).not.toHaveBeenCalled();
   });
 
   it('appelle login et redirige après succès', async () => {
-    mockLogin.mockResolvedValue({ token: 'token', user: { id: '1', email: 'test@example.com' } });
+    mockLogin.mockResolvedValue({
+      token: 'token',
+      user: { id: '1', email: 'test@example.com' },
+    });
 
     render(<AuthForm mode="login" />);
 
     await userEvent.type(screen.getByLabelText(/Email/i), 'test@example.com');
-    await userEvent.type(screen.getByLabelText(/Mot de passe/i), 'SecurePass123');
+    await userEvent.type(
+      screen.getByLabelText(/Mot de passe/i),
+      'SecurePass123'
+    );
 
     fireEvent.submit(screen.getByRole('button', { name: /se connecter/i }));
 
     await waitFor(() => {
-      expect(mockLogin).toHaveBeenCalledWith({ email: 'test@example.com', password: 'SecurePass123' });
+      expect(mockLogin).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'SecurePass123',
+      });
       expect(mockPush).toHaveBeenCalledWith('/documents');
     });
   });
 
   it('appelle register en mode création de compte', async () => {
-    mockRegister.mockResolvedValue({ token: 'token', user: { id: '1', email: 'new@example.com' } });
+    mockRegister.mockResolvedValue({
+      token: 'token',
+      user: { id: '1', email: 'new@example.com' },
+    });
 
     render(<AuthForm mode="register" />);
 
     await userEvent.type(screen.getByLabelText(/Email/i), 'new@example.com');
-    await userEvent.type(screen.getByLabelText(/Mot de passe/i), 'SecurePass123');
+    await userEvent.type(
+      screen.getByLabelText(/Mot de passe/i),
+      'SecurePass123'
+    );
 
     fireEvent.submit(screen.getByRole('button', { name: /créer un compte/i }));
 
     await waitFor(() => {
-      expect(mockRegister).toHaveBeenCalledWith({ email: 'new@example.com', password: 'SecurePass123' });
+      expect(mockRegister).toHaveBeenCalledWith({
+        email: 'new@example.com',
+        password: 'SecurePass123',
+      });
       expect(mockPush).toHaveBeenCalledWith('/documents');
     });
   });
 });
-

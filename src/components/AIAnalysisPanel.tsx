@@ -13,11 +13,19 @@ const labels: Record<AnalysisType, string> = {
   progression: 'Suggestions progression',
 };
 
-export function AIAnalysisPanel({ loading, analysis, onAnalyze }: AIAnalysisPanelProps): JSX.Element {
+export function AIAnalysisPanel({
+  loading,
+  analysis,
+  onAnalyze,
+}: AIAnalysisPanelProps): JSX.Element {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <h3 className="text-lg font-semibold text-gray-900">Assistant IA (ChatGPT)</h3>
-      <p className="mt-1 text-sm text-gray-500">Sélectionnez une analyse pour obtenir des suggestions.</p>
+      <h3 className="text-lg font-semibold text-gray-900">
+        Assistant IA (ChatGPT)
+      </h3>
+      <p className="mt-1 text-sm text-gray-500">
+        Sélectionnez une analyse pour obtenir des suggestions.
+      </p>
 
       <div className="mt-4 grid gap-2">
         {(Object.keys(labels) as AnalysisType[]).map((type) => (
@@ -43,7 +51,9 @@ export function AIAnalysisPanel({ loading, analysis, onAnalyze }: AIAnalysisPane
         <div className="mt-4">
           <div className="flex items-center justify-between text-sm text-gray-500">
             <span>Confiance : {(analysis.confidence * 100).toFixed(0)}%</span>
-            <span>{new Date(analysis.createdAt).toLocaleTimeString('fr-FR')}</span>
+            <span>
+              {new Date(analysis.createdAt).toLocaleTimeString('fr-FR')}
+            </span>
           </div>
           <ul className="mt-3 space-y-2 text-sm text-gray-700">
             {analysis.suggestions.map((suggestion, index) => (
@@ -54,9 +64,12 @@ export function AIAnalysisPanel({ loading, analysis, onAnalyze }: AIAnalysisPane
           </ul>
         </div>
       ) : (
-        !loading && <p className="mt-4 text-sm text-gray-400">Aucune suggestion pour le moment.</p>
+        !loading && (
+          <p className="mt-4 text-sm text-gray-400">
+            Aucune suggestion pour le moment.
+          </p>
+        )
       )}
     </div>
   );
 }
-

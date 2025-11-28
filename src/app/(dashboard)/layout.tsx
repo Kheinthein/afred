@@ -8,7 +8,9 @@ interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps): JSX.Element | null {
+export default function DashboardLayout({
+  children,
+}: DashboardLayoutProps): JSX.Element | null {
   const { isAuthenticated, user, logout } = useAuth();
   const router = useRouter();
 
@@ -54,4 +56,3 @@ export default function DashboardLayout({ children }: DashboardLayoutProps): JSX
     </div>
   );
 }
-

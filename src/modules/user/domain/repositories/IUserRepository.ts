@@ -30,4 +30,3 @@ export interface IUserRepository {
    */
   emailExists(email: string): Promise<boolean>;
 }
-

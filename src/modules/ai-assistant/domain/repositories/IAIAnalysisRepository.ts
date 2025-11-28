@@ -27,4 +27,3 @@ export interface IAIAnalysisRepository {
    */
   deleteByDocumentId(documentId: string): Promise<void>;
 }
-

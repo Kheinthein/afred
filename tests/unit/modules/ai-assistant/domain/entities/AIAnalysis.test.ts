@@ -116,7 +116,7 @@ describe('AIAnalysis Entity', () => {
       );
 
       expect(() => analysis.validate()).toThrow(
-        'L\'analyse doit contenir au moins une suggestion'
+        "L'analyse doit contenir au moins une suggestion"
       );
     });
   });
@@ -149,4 +149,3 @@ describe('AIAnalysis Entity', () => {
     });
   });
 });
-

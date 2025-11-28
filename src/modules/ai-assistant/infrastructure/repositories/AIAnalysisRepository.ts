@@ -71,8 +71,9 @@ export class AIAnalysisRepository implements IAIAnalysisRepository {
       JSON.parse(data.suggestions) as string[],
       data.confidence,
       data.createdAt,
-      data.metadata ? (JSON.parse(data.metadata) as Record<string, unknown>) : undefined
+      data.metadata
+        ? (JSON.parse(data.metadata) as Record<string, unknown>)
+        : undefined
     );
   }
 }
-

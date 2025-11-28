@@ -1,7 +1,11 @@
 import { Document } from '../entities/Document';
 import { DocumentContent } from '../value-objects/DocumentContent';
 import { IDocumentRepository } from '../repositories/IDocumentRepository';
-import { NotFoundError, UnauthorizedError, ValidationError } from '@shared/errors';
+import {
+  NotFoundError,
+  UnauthorizedError,
+  ValidationError,
+} from '@shared/errors';
 
 export interface UpdateDocumentInput {
   documentId: string;
@@ -36,7 +40,7 @@ export class UpdateDocument {
     // 2. Vérifier les permissions
     if (document.userId !== input.userId) {
       throw new UnauthorizedError(
-        'Vous n\'avez pas la permission de modifier ce document'
+        "Vous n'avez pas la permission de modifier ce document"
       );
     }
 
@@ -66,4 +70,3 @@ export class UpdateDocument {
     return { document };
   }
 }
-

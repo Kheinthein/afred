@@ -86,7 +86,7 @@ Retourne UNIQUEMENT un objet JSON avec cette structure exacte:
     context?: string
   ): Promise<ProgressionSuggestionResult> {
     const contextStr = context ? `\n\nContexte additionnel: ${context}` : '';
-    
+
     const prompt = `Tu es un expert en écriture créative spécialisé dans le style "${style.name}". Analyse ce texte et suggère comment faire progresser le récit.${contextStr}
 
 Texte actuel:
@@ -147,8 +147,9 @@ Retourne UNIQUEMENT un objet JSON avec cette structure exacte:
     try {
       return JSON.parse(jsonMatch[0]) as T;
     } catch (error) {
-      throw new Error(`Erreur de parsing JSON: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Erreur de parsing JSON: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 }
-

@@ -18,4 +18,3 @@ export function Spinner({ size = 'md' }: SpinnerProps): JSX.Element {
     </span>
   );
 }
-

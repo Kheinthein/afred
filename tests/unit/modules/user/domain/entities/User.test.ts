@@ -42,7 +42,7 @@ describe('User Entity', () => {
         new Date()
       );
 
-      expect(() => user.validate()).toThrow('L\'email est requis');
+      expect(() => user.validate()).toThrow("L'email est requis");
     });
 
     it('devrait rejeter un utilisateur sans password hash', () => {
@@ -54,16 +54,20 @@ describe('User Entity', () => {
         new Date()
       );
 
-      expect(() => user.validate()).toThrow(
-        'Le mot de passe hashé est requis'
-      );
+      expect(() => user.validate()).toThrow('Le mot de passe hashé est requis');
     });
   });
 
   describe('comparePassword', () => {
     it('devrait retourner true pour un mot de passe correct', async () => {
       const hash = await bcrypt.hash('secret', 10);
-      const user = new User('user-123', 'test@example.com', hash, new Date(), new Date());
+      const user = new User(
+        'user-123',
+        'test@example.com',
+        hash,
+        new Date(),
+        new Date()
+      );
 
       const isValid = await user.comparePassword('secret');
       expect(isValid).toBe(true);
@@ -71,11 +75,16 @@ describe('User Entity', () => {
 
     it('devrait retourner false pour un mot de passe incorrect', async () => {
       const hash = await bcrypt.hash('secret', 10);
-      const user = new User('user-123', 'test@example.com', hash, new Date(), new Date());
+      const user = new User(
+        'user-123',
+        'test@example.com',
+        hash,
+        new Date(),
+        new Date()
+      );
 
       const isValid = await user.comparePassword('wrong');
       expect(isValid).toBe(false);
     });
   });
 });
-

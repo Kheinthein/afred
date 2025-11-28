@@ -8,7 +8,7 @@ describe('Email Value Object', () => {
       expect(email.value).toBe('test@example.com');
     });
 
-    it('devrait normaliser l\'email en minuscules', () => {
+    it("devrait normaliser l'email en minuscules", () => {
       const email = new Email('TEST@EXAMPLE.COM');
       expect(email.value).toBe('test@example.com');
     });
@@ -35,13 +35,13 @@ describe('Email Value Object', () => {
 
     it('devrait rejeter un email vide', () => {
       expect(() => new Email('')).toThrow(ValidationError);
-      expect(() => new Email('')).toThrow('L\'email ne peut pas être vide');
+      expect(() => new Email('')).toThrow("L'email ne peut pas être vide");
     });
 
     it('devrait rejeter un email sans @', () => {
       expect(() => new Email('testexample.com')).toThrow(ValidationError);
       expect(() => new Email('testexample.com')).toThrow(
-        'Format d\'email invalide'
+        "Format d'email invalide"
       );
     });
 
@@ -49,11 +49,11 @@ describe('Email Value Object', () => {
       expect(() => new Email('test@')).toThrow(ValidationError);
     });
 
-    it('devrait rejeter un email sans nom d\'utilisateur', () => {
+    it("devrait rejeter un email sans nom d'utilisateur", () => {
       expect(() => new Email('@example.com')).toThrow(ValidationError);
     });
 
-    it('devrait rejeter un email avec espaces à l\'intérieur', () => {
+    it("devrait rejeter un email avec espaces à l'intérieur", () => {
       expect(() => new Email('test name@example.com')).toThrow(ValidationError);
     });
   });
@@ -66,7 +66,7 @@ describe('Email Value Object', () => {
       expect(email1.equals(email2)).toBe(true);
     });
 
-    it('devrait ignorer la casse pour l\'égalité', () => {
+    it("devrait ignorer la casse pour l'égalité", () => {
       const email1 = new Email('TEST@EXAMPLE.COM');
       const email2 = new Email('test@example.com');
 
@@ -81,4 +81,3 @@ describe('Email Value Object', () => {
     });
   });
 });
-

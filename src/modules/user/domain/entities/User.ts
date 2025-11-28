@@ -18,7 +18,7 @@ export class User {
    */
   validate(): void {
     if (!this.email || this.email.trim().length === 0) {
-      throw new Error('L\'email est requis');
+      throw new Error("L'email est requis");
     }
 
     if (!this.passwordHash || this.passwordHash.trim().length === 0) {
@@ -35,4 +35,3 @@ export class User {
     return bcrypt.compare(password, this.passwordHash);
   }
 }
-

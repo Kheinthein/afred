@@ -3,7 +3,13 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 jest.mock('next/link', () => ({
   __esModule: true,
-  default: ({ children, href }: { children: React.ReactNode; href: string }) => <a href={href}>{children}</a>,
+  default: ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => <a href={href}>{children}</a>,
 }));
 
 const documentMock = {
@@ -24,7 +30,10 @@ describe('DocumentCard', () => {
 
     expect(screen.getByText('Mon roman')).toBeInTheDocument();
     expect(screen.getByText(/Roman • 5 mots • version 2/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Ouvrir/i })).toHaveAttribute('href', '/documents/doc-1');
+    expect(screen.getByRole('link', { name: /Ouvrir/i })).toHaveAttribute(
+      'href',
+      '/documents/doc-1'
+    );
   });
 
   it('appelle onDelete après confirmation', () => {
@@ -37,4 +46,3 @@ describe('DocumentCard', () => {
     expect(onDelete).toHaveBeenCalledWith('doc-1');
   });
 });
-

@@ -45,4 +45,3 @@ export class UserService {
     return { user, token };
   }
 }
-

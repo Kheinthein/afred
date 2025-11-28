@@ -42,17 +42,27 @@ export function DocumentCard({
                 <GripVertical size={18} />
               </button>
             )}
-            <h3 className="text-xl font-semibold text-gray-900">{document.title}</h3>
+            <h3 className="text-xl font-semibold text-gray-900">
+              {document.title}
+            </h3>
           </div>
           <p className="text-sm text-gray-500">
-            {document.style.name} • {document.wordCount} mots • version {document.version}
+            {document.style.name} • {document.wordCount} mots • version{' '}
+            {document.version}
           </p>
         </div>
         <div className="text-right text-xs text-gray-400">
-          <p>Modifié le {format(new Date(document.updatedAt), 'dd MMM yyyy', { locale: fr })}</p>
+          <p>
+            Modifié le{' '}
+            {format(new Date(document.updatedAt), 'dd MMM yyyy', {
+              locale: fr,
+            })}
+          </p>
         </div>
       </div>
-      <p className="mt-3 line-clamp-3 text-sm text-gray-600">{document.content}</p>
+      <p className="mt-3 line-clamp-3 text-sm text-gray-600">
+        {document.content}
+      </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <Link
@@ -77,7 +87,8 @@ export function DocumentCard({
           title="Supprimer ce document ?"
           message={
             <p>
-              Le document <strong>{document.title}</strong> sera définitivement supprimé.
+              Le document <strong>{document.title}</strong> sera définitivement
+              supprimé.
             </p>
           }
           confirmLabel="Oui, supprimer"
@@ -92,4 +103,3 @@ export function DocumentCard({
     </div>
   );
 }
-

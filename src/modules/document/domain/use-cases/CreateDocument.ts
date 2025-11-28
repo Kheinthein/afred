@@ -30,7 +30,7 @@ export class CreateDocument {
   async execute(input: CreateDocumentInput): Promise<CreateDocumentOutput> {
     // 1. Valider les entrées
     if (!input.userId || input.userId.trim().length === 0) {
-      throw new ValidationError('L\'ID utilisateur est requis');
+      throw new ValidationError("L'ID utilisateur est requis");
     }
 
     if (!input.title || input.title.trim().length === 0) {
@@ -38,7 +38,7 @@ export class CreateDocument {
     }
 
     if (!input.style) {
-      throw new ValidationError('Le style d\'écriture est requis');
+      throw new ValidationError("Le style d'écriture est requis");
     }
 
     // 2. Créer le contenu
@@ -72,4 +72,3 @@ export class CreateDocument {
     return `doc_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   }
 }
-

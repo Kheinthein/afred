@@ -24,9 +24,7 @@ export interface AuthenticateUserOutput {
 export class AuthenticateUser {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  async execute(
-    input: AuthenticateUserInput
-  ): Promise<AuthenticateUserOutput> {
+  async execute(input: AuthenticateUserInput): Promise<AuthenticateUserOutput> {
     // 1. Valider l'email
     const email = new Email(input.email);
 
@@ -50,4 +48,3 @@ export class AuthenticateUser {
     return { user };
   }
 }
-

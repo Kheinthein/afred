@@ -7,7 +7,8 @@ let schemaReady = false;
 const defaultStyles = [
   {
     name: 'Roman',
-    description: "Récit long avec développement approfondi des personnages et de l'intrigue",
+    description:
+      "Récit long avec développement approfondi des personnages et de l'intrigue",
   },
   {
     name: 'Nouvelle',
@@ -15,11 +16,13 @@ const defaultStyles = [
   },
   {
     name: 'Poésie',
-    description: "Texte en vers ou en prose poétique, jouant avec les sonorités et les images",
+    description:
+      'Texte en vers ou en prose poétique, jouant avec les sonorités et les images',
   },
   {
     name: 'Essai',
-    description: 'Texte argumentatif présentant une réflexion personnelle sur un sujet',
+    description:
+      'Texte argumentatif présentant une réflexion personnelle sur un sujet',
   },
   {
     name: 'Thriller',
@@ -27,11 +30,13 @@ const defaultStyles = [
   },
   {
     name: 'Science-Fiction',
-    description: 'Récit spéculatif basé sur des avancées scientifiques ou technologiques',
+    description:
+      'Récit spéculatif basé sur des avancées scientifiques ou technologiques',
   },
   {
     name: 'Fantasy',
-    description: "Récit d'aventure dans un monde imaginaire avec magie et créatures fantastiques",
+    description:
+      "Récit d'aventure dans un monde imaginaire avec magie et créatures fantastiques",
   },
 ];
 
@@ -67,4 +72,3 @@ export async function getAnyStyleId(): Promise<string> {
   }
   return style.id;
 }
-

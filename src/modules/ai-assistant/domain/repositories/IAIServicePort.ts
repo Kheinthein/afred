@@ -64,4 +64,3 @@ export interface IAIServicePort {
    */
   summarize(text: string, maxWords: number): Promise<string>;
 }
-

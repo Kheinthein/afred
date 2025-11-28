@@ -12,7 +12,9 @@ describe('Auth API Routes', () => {
       password: 'SecurePass123',
     };
 
-    const response = await RegisterRoute(createJsonRequest('/api/auth/register', 'POST', payload));
+    const response = await RegisterRoute(
+      createJsonRequest('/api/auth/register', 'POST', payload)
+    );
 
     expect(response.status).toBe(201);
 
@@ -32,9 +34,13 @@ describe('Auth API Routes', () => {
       password: 'SecurePass123',
     };
 
-    await RegisterRoute(createJsonRequest('/api/auth/register', 'POST', credentials));
+    await RegisterRoute(
+      createJsonRequest('/api/auth/register', 'POST', credentials)
+    );
 
-    const response = await LoginRoute(createJsonRequest('/api/auth/login', 'POST', credentials));
+    const response = await LoginRoute(
+      createJsonRequest('/api/auth/login', 'POST', credentials)
+    );
 
     expect(response.status).toBe(200);
 
@@ -48,4 +54,3 @@ describe('Auth API Routes', () => {
     expect(body.data.token).toBeDefined();
   });
 });
-

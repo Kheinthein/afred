@@ -68,4 +68,3 @@ export class Document {
     this.sortOrder = order;
   }
 }
-

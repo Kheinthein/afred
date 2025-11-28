@@ -14,22 +14,37 @@ interface UpdateDocumentPayload {
 
 export const documentService = {
   async list(): Promise<DocumentDTO[]> {
-    const { data } = await apiClient.get<{ success: boolean; data: { documents: DocumentDTO[] } }>('/documents');
+    const { data } = await apiClient.get<{
+      success: boolean;
+      data: { documents: DocumentDTO[] };
+    }>('/documents');
     return data.data.documents;
   },
 
   async getById(id: string): Promise<DocumentDTO> {
-    const { data } = await apiClient.get<{ success: boolean; data: { document: DocumentDTO } }>(`/documents/${id}`);
+    const { data } = await apiClient.get<{
+      success: boolean;
+      data: { document: DocumentDTO };
+    }>(`/documents/${id}`);
     return data.data.document;
   },
 
   async create(payload: CreateDocumentPayload): Promise<DocumentDTO> {
-    const { data } = await apiClient.post<{ success: boolean; data: { document: DocumentDTO } }>('/documents', payload);
+    const { data } = await apiClient.post<{
+      success: boolean;
+      data: { document: DocumentDTO };
+    }>('/documents', payload);
     return data.data.document;
   },
 
-  async update(id: string, payload: UpdateDocumentPayload): Promise<DocumentDTO> {
-    const { data } = await apiClient.put<{ success: boolean; data: { document: DocumentDTO } }>(`/documents/${id}`, payload);
+  async update(
+    id: string,
+    payload: UpdateDocumentPayload
+  ): Promise<DocumentDTO> {
+    const { data } = await apiClient.put<{
+      success: boolean;
+      data: { document: DocumentDTO };
+    }>(`/documents/${id}`, payload);
     return data.data.document;
   },
 
@@ -41,4 +56,3 @@ export const documentService = {
     await apiClient.post('/documents/reorder', { documentIds });
   },
 };
-

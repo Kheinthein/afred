@@ -4,8 +4,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Alfred - Assistant d\'Écriture IA',
-  description: 'Application d\'écriture avec assistant IA pour écrivains',
+  title: "Alfred - Assistant d'Écriture IA",
+  description: "Application d'écriture avec assistant IA pour écrivains",
 };
 
 export default function RootLayout({
@@ -23,4 +23,3 @@ export default function RootLayout({
     </html>
   );
 }
-

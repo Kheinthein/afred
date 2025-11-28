@@ -31,4 +31,3 @@ export async function parseJson<T>(response: Response): Promise<T> {
 export function uniqueEmail(prefix = 'user'): string {
   return `${prefix}+${Date.now()}${Math.round(Math.random() * 1000)}@example.com`;
 }
-

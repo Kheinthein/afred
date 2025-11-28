@@ -10,11 +10,11 @@ export class Email {
     const trimmed = email.trim().toLowerCase();
 
     if (!trimmed || trimmed.length === 0) {
-      throw new ValidationError('L\'email ne peut pas être vide');
+      throw new ValidationError("L'email ne peut pas être vide");
     }
 
     if (!this.isValid(trimmed)) {
-      throw new ValidationError('Format d\'email invalide');
+      throw new ValidationError("Format d'email invalide");
     }
 
     this.value = trimmed;
@@ -40,4 +40,3 @@ export class Email {
     return this.value;
   }
 }
-

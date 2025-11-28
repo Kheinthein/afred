@@ -24,7 +24,7 @@ export class AIAnalysis {
     }
 
     if (this.suggestions.length === 0) {
-      throw new Error('L\'analyse doit contenir au moins une suggestion');
+      throw new Error("L'analyse doit contenir au moins une suggestion");
     }
   }
 
@@ -35,4 +35,3 @@ export class AIAnalysis {
     return this.confidence >= 0.8;
   }
 }
-

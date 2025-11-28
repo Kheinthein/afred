@@ -22,7 +22,10 @@ export default function DocumentDetailPage(): JSX.Element {
 
   return (
     <div className="space-y-6">
-      <Link href="/app/documents" className="text-sm font-medium text-blue-600 hover:underline">
+      <Link
+        href="/app/documents"
+        className="text-sm font-medium text-blue-600 hover:underline"
+      >
         ← Retour aux documents
       </Link>
 
@@ -30,4 +33,3 @@ export default function DocumentDetailPage(): JSX.Element {
     </div>
   );
 }
-

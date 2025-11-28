@@ -14,7 +14,14 @@ export function SortableDocumentCard({
   onDelete,
   isDeleting,
 }: SortableDocumentCardProps): JSX.Element {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: document.id,
   });
 
@@ -35,4 +42,3 @@ export function SortableDocumentCard({
     </div>
   );
 }
-
