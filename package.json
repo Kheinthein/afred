@@ -17,7 +17,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:unit": "jest --testPathPattern=tests/unit",
-    "test:integration": "jest --runInBand --testPathPattern=tests/integration",
+    "test:integration": "jest --runInBand --forceExit --testPathPattern=tests/integration",
     "test:e2e": "playwright test",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
