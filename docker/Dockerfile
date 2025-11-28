@@ -10,6 +10,9 @@ RUN npm ci --only=production --ignore-scripts
 FROM node:20-alpine AS builder
 WORKDIR /app
 
+# Install OpenSSL for Prisma
+RUN apk add --no-cache openssl
+
 COPY package*.json ./
 # Disable husky install in Docker
 RUN npm ci --ignore-scripts
@@ -28,6 +31,9 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+
+# Install OpenSSL for Prisma
+RUN apk add --no-cache openssl
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
