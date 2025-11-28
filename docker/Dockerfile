@@ -3,14 +3,16 @@ FROM node:20-alpine AS deps
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production
+# Disable husky install in Docker
+RUN npm ci --only=production --ignore-scripts
 
 # Stage 2: Build
 FROM node:20-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+# Disable husky install in Docker
+RUN npm ci --ignore-scripts
 
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
