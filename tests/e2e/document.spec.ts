@@ -158,8 +158,8 @@ test.describe('Gestion des Documents E2E', () => {
       }
     );
 
-    const { data } = await response.json();
-    const documentId = data.document.id;
+    // Document créé avec succès
+    await response.json();
 
     // Recharger la page
     await page.reload();

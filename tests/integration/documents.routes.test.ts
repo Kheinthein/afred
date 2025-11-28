@@ -26,9 +26,7 @@ describe('Documents API Routes', () => {
 
   it('crée un document et le retourne dans la liste', async () => {
     const { token } = await createAuthenticatedUser();
-    const stylesResponse = await StylesRoute(
-      createJsonRequest('/api/styles', 'GET')
-    );
+    const stylesResponse = await StylesRoute();
     const stylesBody = await parseJson<{
       data: { styles: Array<{ id: string }> };
     }>(stylesResponse);
@@ -67,9 +65,7 @@ describe('Documents API Routes', () => {
 
   it('permet de réordonner les documents', async () => {
     const { token } = await createAuthenticatedUser();
-    const stylesResponse = await StylesRoute(
-      createJsonRequest('/api/styles', 'GET')
-    );
+    const stylesResponse = await StylesRoute();
     const stylesBody = await parseJson<{
       data: { styles: Array<{ id: string }> };
     }>(stylesResponse);
@@ -122,9 +118,7 @@ describe('Documents API Routes', () => {
   });
 
   it('refuse la création sans jeton', async () => {
-    const stylesResponse = await StylesRoute(
-      createJsonRequest('/api/styles', 'GET')
-    );
+    const stylesResponse = await StylesRoute();
     const stylesBody = await parseJson<{
       data: { styles: Array<{ id: string }> };
     }>(stylesResponse);

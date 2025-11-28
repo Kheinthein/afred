@@ -136,7 +136,7 @@ describe('AuthenticateUser Use Case', () => {
     it.each([null, undefined])('devrait rejeter email: %p', async (email) => {
       await expect(
         authenticateUser.execute({
-          email: email as string,
+          email: (email as unknown) as string,
           password: 'Password123',
         })
       ).rejects.toThrow();
