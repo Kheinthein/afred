@@ -1,0 +1,67 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  documents    Document[]
+
+  @@map("users")
+}
+
+model WritingStyle {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  description String
+  createdAt   DateTime   @default(now())
+  documents   Document[]
+
+  @@map("writing_styles")
+}
+
+model Document {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  wordCount Int           @default(0)
+  styleId   String
+  style     WritingStyle  @relation(fields: [styleId], references: [id])
+  version   Int           @default(1)
+  sortOrder BigInt        @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  analyses  AIAnalysis[]
+
+  @@index([userId])
+  @@index([styleId])
+  @@index([userId, sortOrder])
+  @@map("documents")
+}
+
+model AIAnalysis {
+  id         String   @id @default(cuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  type       String // 'syntax' | 'style' | 'progression'
+  suggestions String // JSON array
+  confidence Float
+  metadata   String? // JSON object
+  createdAt  DateTime @default(now())
+
+  @@index([documentId])
+  @@map("ai_analyses")
+}
+

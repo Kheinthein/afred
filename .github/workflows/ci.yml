@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run unit + integration tests
+        env:
+          DATABASE_URL: file:./test.db
+        run: npm test
+
+      - name: Build Next.js app
+        run: npm run build
+name: CI - Tests & Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    name: Tests & Linting
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Lint code
+        run: npm run lint
+
+      - name: 🎨 Check formatting
+        run: npm run format:check
+
+      - name: 🏗️ Type check
+        run: npm run type-check
+
+      - name: 🏗️ Build project
+        run: npm run build
+        env:
+          DATABASE_URL: file:./test.db
+          JWT_SECRET: test-secret
+          AI_PROVIDER: claude
+          ANTHROPIC_API_KEY: test-key
+
+      - name: 🗃️ Generate Prisma Client
+        run: npm run db:generate
+
+      - name: 🧪 Run unit tests
+        run: npm run test:unit
+        env:
+          DATABASE_URL: file:./test.db
+          JWT_SECRET: test-secret
+          NODE_ENV: test
+
+      - name: 📊 Upload coverage
+        uses: codecov/codecov-action@v3
+        if: matrix.node-version == '20.x'
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: alfred-coverage
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - run: npm audit --audit-level=moderate
+

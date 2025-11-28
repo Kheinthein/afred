@@ -1,0 +1,90 @@
+import { IAIServicePort } from '@modules/ai-assistant/domain/repositories/IAIServicePort';
+import { ClaudeAdapter } from './ClaudeAdapter';
+import { OpenAIAdapter } from './OpenAIAdapter';
+import { AIProvider } from '@shared/types';
+
+export interface AIConfig {
+  provider: AIProvider;
+  apiKey?: string;
+  model?: string;
+  baseUrl?: string;
+}
+
+/**
+ * Factory pour créer le bon AI adapter selon la configuration
+ * Pattern Factory + Dependency Inversion
+ */
+export class AIAdapterFactory {
+  static create(config: AIConfig): IAIServicePort {
+    switch (config.provider) {
+      case 'claude':
+        if (!config.apiKey) {
+          throw new Error('Claude API key est requis');
+        }
+        return new ClaudeAdapter(config.apiKey, config.model);
+
+      case 'openai':
+        if (!config.apiKey) {
+          throw new Error('OpenAI API key est requis');
+        }
+        return new OpenAIAdapter(config.apiKey, config.model);
+
+      case 'mistral':
+        throw new Error('Mistral adapter pas encore implémenté');
+
+      case 'ollama':
+        throw new Error('Ollama adapter pas encore implémenté');
+
+      default:
+        throw new Error(
+          `Provider IA inconnu: ${config.provider}. Providers supportés: claude, openai`
+        );
+    }
+  }
+
+  /**
+   * Crée un adapter depuis les variables d'environnement
+   */
+  static createFromEnv(): IAIServicePort {
+    const provider = (process.env.AI_PROVIDER || 'claude') as AIProvider;
+    
+    const config: AIConfig = {
+      provider,
+      apiKey: this.getApiKeyForProvider(provider),
+      model: this.getModelForProvider(provider),
+    };
+
+    return this.create(config);
+  }
+
+  private static getApiKeyForProvider(provider: AIProvider): string | undefined {
+    switch (provider) {
+      case 'claude':
+        return process.env.ANTHROPIC_API_KEY;
+      case 'openai':
+        return process.env.OPENAI_API_KEY;
+      case 'mistral':
+        return process.env.MISTRAL_API_KEY;
+      case 'ollama':
+        return undefined; // Pas besoin d'API key pour Ollama
+      default:
+        return undefined;
+    }
+  }
+
+  private static getModelForProvider(provider: AIProvider): string | undefined {
+    switch (provider) {
+      case 'claude':
+        return process.env.CLAUDE_MODEL || 'claude-3-5-sonnet-20241022';
+      case 'openai':
+        return process.env.OPENAI_MODEL || 'gpt-4-turbo';
+      case 'mistral':
+        return process.env.MISTRAL_MODEL || 'mistral-large-latest';
+      case 'ollama':
+        return process.env.OLLAMA_MODEL || 'llama3.1';
+      default:
+        return undefined;
+    }
+  }
+}
+
