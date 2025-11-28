@@ -12,13 +12,14 @@ export interface AuthenticatedRequest extends NextRequest {
  * Vérifie le token dans le header Authorization
  * Attache userId et userEmail à la request
  */
-export async function authenticateRequest(
-  request: NextRequest
-): Promise<{ userId: string; userEmail: string }> {
+export function authenticateRequest(request: NextRequest): {
+  userId: string;
+  userEmail: string;
+} {
   const authHeader = request.headers.get('authorization');
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throw new UnauthorizedError('Token d\'authentification manquant');
+    throw new UnauthorizedError("Token d'authentification manquant");
   }
 
   const token = authHeader.substring(7); // Remove 'Bearer '
@@ -29,8 +30,7 @@ export async function authenticateRequest(
       userId: payload.userId,
       userEmail: payload.email,
     };
-  } catch (error) {
+  } catch {
     throw new UnauthorizedError('Token invalide ou expiré');
   }
 }
-

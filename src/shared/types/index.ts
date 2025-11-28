@@ -40,7 +40,9 @@ export interface LoginPayload {
   password: string;
 }
 
-export interface RegisterPayload extends LoginPayload {}
+export interface RegisterPayload extends LoginPayload {
+  readonly _brand?: 'RegisterPayload';
+}
 
 export interface WritingStyleDTO {
   id: string;
@@ -75,4 +77,3 @@ export interface AnalyzeResponse {
     processingTime: string;
   };
 }
-

@@ -4,12 +4,13 @@ import { NextResponse } from 'next/server';
  * GET /api/docs
  * Documentation de l'API Alfred
  */
-export async function GET(): Promise<NextResponse> {
+export function GET(): NextResponse {
   const docs = {
     title: 'Alfred API Documentation',
     version: '1.0.0',
     baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
-    description: 'API REST pour l\'application d\'écriture Alfred avec assistant IA',
+    description:
+      "API REST pour l'application d'écriture Alfred avec assistant IA",
     endpoints: {
       auth: {
         register: {
@@ -49,7 +50,7 @@ export async function GET(): Promise<NextResponse> {
         list: {
           method: 'GET',
           path: '/api/documents',
-          description: 'Récupérer tous les documents de l\'utilisateur',
+          description: "Récupérer tous les documents de l'utilisateur",
           auth: 'Bearer token requis',
           response: {
             success: true,
@@ -149,7 +150,8 @@ export async function GET(): Promise<NextResponse> {
           description: 'Réordonner les documents de l’utilisateur',
           auth: 'Bearer token requis',
           body: {
-            documentIds: 'string[] (liste complète des IDs dans l’ordre souhaité)',
+            documentIds:
+              'string[] (liste complète des IDs dans l’ordre souhaité)',
           },
           response: {
             success: true,
@@ -173,7 +175,7 @@ export async function GET(): Promise<NextResponse> {
         analyze: {
           method: 'POST',
           path: '/api/ai/analyze',
-          description: 'Analyser un document avec l\'IA (ChatGPT)',
+          description: "Analyser un document avec l'IA (ChatGPT)",
           auth: 'Bearer token requis',
           body: {
             documentId: 'string (ID du document)',
@@ -181,7 +183,7 @@ export async function GET(): Promise<NextResponse> {
           },
           analysisTypes: {
             syntax: 'Analyse syntaxe, grammaire et orthographe',
-            style: 'Analyse du style d\'écriture par rapport au style cible',
+            style: "Analyse du style d'écriture par rapport au style cible",
             progression: 'Suggestions pour faire progresser le récit',
           },
           response: {
@@ -206,7 +208,7 @@ export async function GET(): Promise<NextResponse> {
         list: {
           method: 'GET',
           path: '/api/styles',
-          description: 'Récupérer tous les styles d\'écriture disponibles',
+          description: "Récupérer tous les styles d'écriture disponibles",
           auth: 'Aucune',
           response: {
             success: true,
@@ -227,7 +229,8 @@ export async function GET(): Promise<NextResponse> {
       type: 'JWT Bearer Token',
       header: 'Authorization: Bearer <token>',
       tokenLifetime: '7 days',
-      howToGet: 'S\'inscrire via POST /api/auth/register ou se connecter via POST /api/auth/login',
+      howToGet:
+        "S'inscrire via POST /api/auth/register ou se connecter via POST /api/auth/login",
     },
     examples: {
       register: {
@@ -252,7 +255,7 @@ export async function GET(): Promise<NextResponse> {
       success: false,
       error: {
         code: 'ERROR_CODE',
-        message: 'Description de l\'erreur',
+        message: "Description de l'erreur",
         details: '[] (optionnel, pour erreurs de validation)',
       },
     },
@@ -280,4 +283,3 @@ export async function GET(): Promise<NextResponse> {
     },
   });
 }
-

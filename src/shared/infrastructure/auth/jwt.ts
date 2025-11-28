@@ -2,8 +2,10 @@ import jwt from 'jsonwebtoken';
 import { JWTPayload } from '@shared/types';
 import { UnauthorizedError } from '@shared/errors';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-change-in-production';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_SECRET: jwt.Secret =
+  process.env.JWT_SECRET ?? 'default-secret-change-in-production';
+const JWT_EXPIRES_IN: Exclude<jwt.SignOptions['expiresIn'], undefined> =
+  (process.env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn']) ?? '7d';
 
 /**
  * Génère un token JWT pour un utilisateur
@@ -29,7 +31,6 @@ export function verifyToken(token: string): JWTPayload {
     if (error instanceof jwt.JsonWebTokenError) {
       throw new UnauthorizedError('Token invalide');
     }
-    throw new UnauthorizedError('Erreur d\'authentification');
+    throw new UnauthorizedError("Erreur d'authentification");
   }
 }
-

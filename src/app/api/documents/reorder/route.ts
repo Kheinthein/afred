@@ -6,13 +6,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const ReorderDocumentsSchema = z.object({
-  documentIds: z.array(z.string().min(1)).min(1, 'La liste ne peut pas être vide'),
+  documentIds: z
+    .array(z.string().min(1))
+    .min(1, 'La liste ne peut pas être vide'),
 });
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const { userId } = await authenticateRequest(request);
-    const body = await request.json();
+    const { userId } = authenticateRequest(request);
+    const body: unknown = await request.json();
     const data = ReorderDocumentsSchema.parse(body);
 
     const reorderDocuments = container.get<ReorderDocuments>(ReorderDocuments);
@@ -29,5 +31,3 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return handleError(error);
   }
 }
-
-

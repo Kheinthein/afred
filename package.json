@@ -28,7 +28,7 @@
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "type-check": "tsc --noEmit",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "keywords": [
     "writing",

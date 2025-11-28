@@ -1,7 +1,16 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint
-npm run format:check
+# Pre-commit hook pour Alfred Writing Assistant
+# Exécute lint-staged pour vérifier le code avant commit
+
+echo "🔍 Running pre-commit checks..."
+
+# Lint et format les fichiers staged
+npx lint-staged
+
+# Vérifier les types TypeScript
+echo "🔧 Type checking..."
 npm run type-check
 
+echo "✅ Pre-commit checks passed!"

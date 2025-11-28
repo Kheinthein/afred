@@ -35,10 +35,12 @@ export class AIAdapterFactory {
       case 'ollama':
         throw new Error('Ollama adapter pas encore implémenté');
 
-      default:
+      default: {
+        const exhaustiveCheck: never = config.provider;
         throw new Error(
-          `Provider IA inconnu: ${config.provider}. Providers supportés: claude, openai`
+          `Provider IA inconnu: ${String(exhaustiveCheck)}. Providers supportés: claude, openai`
         );
+      }
     }
   }
 
@@ -47,7 +49,7 @@ export class AIAdapterFactory {
    */
   static createFromEnv(): IAIServicePort {
     const provider = (process.env.AI_PROVIDER || 'claude') as AIProvider;
-    
+
     const config: AIConfig = {
       provider,
       apiKey: this.getApiKeyForProvider(provider),
@@ -57,7 +59,9 @@ export class AIAdapterFactory {
     return this.create(config);
   }
 
-  private static getApiKeyForProvider(provider: AIProvider): string | undefined {
+  private static getApiKeyForProvider(
+    provider: AIProvider
+  ): string | undefined {
     switch (provider) {
       case 'claude':
         return process.env.ANTHROPIC_API_KEY;
@@ -67,8 +71,11 @@ export class AIAdapterFactory {
         return process.env.MISTRAL_API_KEY;
       case 'ollama':
         return undefined; // Pas besoin d'API key pour Ollama
-      default:
+      default: {
+        const exhaustiveCheck: never = provider;
+        void exhaustiveCheck;
         return undefined;
+      }
     }
   }
 
@@ -82,9 +89,11 @@ export class AIAdapterFactory {
         return process.env.MISTRAL_MODEL || 'mistral-large-latest';
       case 'ollama':
         return process.env.OLLAMA_MODEL || 'llama3.1';
-      default:
+      default: {
+        const exhaustiveCheck: never = provider;
+        void exhaustiveCheck;
         return undefined;
+      }
     }
   }
 }
-

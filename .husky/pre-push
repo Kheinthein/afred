@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-push hook pour Alfred Writing Assistant
+# Exécute les tests unitaires avant push
+
+echo "🧪 Running pre-push checks..."
+
+# Exécuter les tests unitaires (rapides)
+echo "🧪 Running unit tests..."
+npm run test:unit
+
+# Si les tests passent, autoriser le push
+if [ $? -eq 0 ]; then
+  echo "✅ All tests passed! Pushing..."
+else
+  echo "❌ Tests failed! Fix them before pushing."
+  exit 1
+fi
+

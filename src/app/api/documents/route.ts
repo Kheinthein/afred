@@ -15,7 +15,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     // 1. Authentifier
-    const { userId } = await authenticateRequest(request);
+    const { userId } = authenticateRequest(request);
 
     // 2. Récupérer les documents
     const getUserDocuments = container.get<GetUserDocuments>(GetUserDocuments);
@@ -53,10 +53,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     // 1. Authentifier
-    const { userId } = await authenticateRequest(request);
+    const { userId } = authenticateRequest(request);
 
     // 2. Parser et valider le body
-    const body = await request.json();
+    const body: unknown = await request.json();
     const data = CreateDocumentDTOSchema.parse(body);
 
     // 3. Récupérer le style
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Style d\'écriture non trouvé',
+            message: "Style d'écriture non trouvé",
           },
         },
         { status: 404 }
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               name: result.document.style.name,
             },
             version: result.document.version,
-          sortOrder: result.document.sortOrder,
+            sortOrder: result.document.sortOrder,
             createdAt: result.document.createdAt,
             updatedAt: result.document.updatedAt,
           },
@@ -119,4 +119,3 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return handleError(error);
   }
 }
-

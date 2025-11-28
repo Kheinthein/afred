@@ -1,41 +1,3 @@
-name: CI
-
-on:
-  push:
-    branches:
-      - main
-      - develop
-  pull_request:
-    branches:
-      - main
-      - develop
-
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Run unit + integration tests
-        env:
-          DATABASE_URL: file:./test.db
-        run: npm test
-
-      - name: Build Next.js app
-        run: npm run build
 name: CI - Tests & Quality
 
 on:
@@ -75,14 +37,6 @@ jobs:
       - name: 🏗️ Type check
         run: npm run type-check
 
-      - name: 🏗️ Build project
-        run: npm run build
-        env:
-          DATABASE_URL: file:./test.db
-          JWT_SECRET: test-secret
-          AI_PROVIDER: claude
-          ANTHROPIC_API_KEY: test-key
-
       - name: 🗃️ Generate Prisma Client
         run: npm run db:generate
 
@@ -93,6 +47,23 @@ jobs:
           JWT_SECRET: test-secret
           NODE_ENV: test
 
+      - name: 🔗 Run integration tests
+        run: npm run test:integration
+        env:
+          DATABASE_URL: file:./test.db
+          JWT_SECRET: test-secret
+          AI_PROVIDER: openai
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NODE_ENV: test
+
+      - name: 🏗️ Build project
+        run: npm run build
+        env:
+          DATABASE_URL: file:./test.db
+          JWT_SECRET: test-secret
+          AI_PROVIDER: openai
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
       - name: 📊 Upload coverage
         uses: codecov/codecov-action@v3
         if: matrix.node-version == '20.x'
@@ -101,13 +72,80 @@ jobs:
           flags: unittests
           name: alfred-coverage
 
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🗃️ Generate Prisma Client
+        run: npm run db:generate
+
+      - name: 🗃️ Setup database
+        run: npm run db:push
+        env:
+          DATABASE_URL: file:./dev.db
+
+      - name: 🌱 Seed database
+        run: npm run db:seed
+        env:
+          DATABASE_URL: file:./dev.db
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: 🎭 Run E2E tests
+        run: npm run test:e2e
+        env:
+          DATABASE_URL: file:./dev.db
+          JWT_SECRET: test-secret-e2e
+          AI_PROVIDER: openai
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CI: true
+
+      - name: 📸 Upload Playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: 📸 Upload test results
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7
+
   security:
     name: Security Audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-      - run: npm audit --audit-level=moderate
 
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔒 Run security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true

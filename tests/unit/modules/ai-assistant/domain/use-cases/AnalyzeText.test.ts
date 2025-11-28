@@ -1,11 +1,14 @@
 import { IAIAnalysisRepository } from '@modules/ai-assistant/domain/repositories/IAIAnalysisRepository';
 import { IAIServicePort } from '@modules/ai-assistant/domain/repositories/IAIServicePort';
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { AnalyzeText } from '@modules/ai-assistant/domain/use-cases/AnalyzeText';
 import { Document } from '@modules/document/domain/entities/Document';
 import { WritingStyle } from '@modules/document/domain/entities/WritingStyle';
 import { IDocumentRepository } from '@modules/document/domain/repositories/IDocumentRepository';
 import { DocumentContent } from '@modules/document/domain/value-objects/DocumentContent';
 import { NotFoundError, UnauthorizedError } from '@shared/errors';
+import { AnalysisType } from '@shared/types';
 
 describe('AnalyzeText Use Case', () => {
   let analyzeText: AnalyzeText;
@@ -129,12 +132,15 @@ describe('AnalyzeText Use Case', () => {
       expect(result.analysis.suggestions).toContain(
         'Développer le personnage principal'
       );
-      expect(mockAIService.suggestProgression).toHaveBeenCalledWith(mockDocument.content.text, mockDocument.style);
+      expect(mockAIService.suggestProgression).toHaveBeenCalledWith(
+        mockDocument.content.text,
+        mockDocument.style
+      );
     });
   });
 
   describe('Erreurs', () => {
-    it('devrait rejeter si le document n\'existe pas', async () => {
+    it("devrait rejeter si le document n'existe pas", async () => {
       mockDocumentRepo.findById.mockResolvedValue(null);
 
       await expect(
@@ -146,7 +152,7 @@ describe('AnalyzeText Use Case', () => {
       ).rejects.toThrow(NotFoundError);
     });
 
-    it('devrait rejeter si l\'utilisateur n\'a pas les permissions', async () => {
+    it("devrait rejeter si l'utilisateur n'a pas les permissions", async () => {
       mockDocumentRepo.findById.mockResolvedValue(mockDocument);
 
       await expect(
@@ -158,17 +164,16 @@ describe('AnalyzeText Use Case', () => {
       ).rejects.toThrow(UnauthorizedError);
     });
 
-    it('devrait rejeter un type d\'analyse invalide', async () => {
+    it("devrait rejeter un type d'analyse invalide", async () => {
       mockDocumentRepo.findById.mockResolvedValue(mockDocument);
 
       await expect(
         analyzeText.execute({
           documentId: 'doc-123',
           userId: 'user-456',
-          analysisType: 'invalid' as any,
+          analysisType: 'invalid' as unknown as AnalysisType,
         })
-      ).rejects.toThrow('Type d\'analyse non supporté');
+      ).rejects.toThrow("Type d'analyse non supporté");
     });
   });
 });
-

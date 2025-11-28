@@ -22,7 +22,8 @@ export function DocumentEditor({ document }: DocumentEditorProps): JSX.Element {
   }, [document.content]);
 
   const updateMutation = useMutation({
-    mutationFn: (payload: { content: string }) => documentService.update(document.id, payload),
+    mutationFn: (payload: { content: string }) =>
+      documentService.update(document.id, payload),
   });
 
   useEffect(() => {
@@ -35,11 +36,13 @@ export function DocumentEditor({ document }: DocumentEditorProps): JSX.Element {
     return () => clearTimeout(timeout);
   }, [content, document.content, document.id, updateMutation]);
 
-  const handleContentChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
+  const handleContentChange = (
+    event: ChangeEvent<HTMLTextAreaElement>
+  ): void => {
     setContent(event.target.value);
   };
 
-  const handleAnalyze = async (type: AnalysisType): Promise<void> => {
+  const performAnalyze = async (type: AnalysisType): Promise<void> => {
     try {
       setIsAnalyzing(true);
       const response = await aiService.analyze(document.id, type);
@@ -48,14 +51,20 @@ export function DocumentEditor({ document }: DocumentEditorProps): JSX.Element {
       setIsAnalyzing(false);
     }
   };
+  const handleAnalyze = (type: AnalysisType): void => {
+    void performAnalyze(type);
+  };
 
   return (
     <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
       <div className="relative rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
         <div className="mb-4">
-          <h1 className="text-2xl font-semibold text-gray-900">{document.title}</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">
+            {document.title}
+          </h1>
           <p className="text-sm text-gray-500">
-            Style : {document.style.name} • Version {document.version} • {content.split(/\s+/).filter(Boolean).length} mots
+            Style : {document.style.name} • Version {document.version} •{' '}
+            {content.split(/\s+/).filter(Boolean).length} mots
           </p>
         </div>
 
@@ -67,19 +76,28 @@ export function DocumentEditor({ document }: DocumentEditorProps): JSX.Element {
         />
 
         <p className="mt-2 text-xs text-gray-400">
-          {updateMutation.isLoading ? 'Sauvegarde...' : updateMutation.isSuccess ? 'Sauvegardé' : 'Dernière sauvegarde auto'}
+          {updateMutation.isPending
+            ? 'Sauvegarde...'
+            : updateMutation.isSuccess
+              ? 'Sauvegardé'
+              : 'Dernière sauvegarde auto'}
         </p>
 
         {isAnalyzing && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-lg bg-white/80">
             <Spinner />
-            <p className="text-sm font-medium text-blue-700">Analyse IA en cours...</p>
+            <p className="text-sm font-medium text-blue-700">
+              Analyse IA en cours...
+            </p>
           </div>
         )}
       </div>
 
-      <AIAnalysisPanel loading={isAnalyzing} analysis={analysis} onAnalyze={handleAnalyze} />
+      <AIAnalysisPanel
+        loading={isAnalyzing}
+        analysis={analysis}
+        onAnalyze={handleAnalyze}
+      />
     </div>
   );
 }
-

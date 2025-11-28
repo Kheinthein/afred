@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { CreateUser } from '@modules/user/domain/use-cases/CreateUser';
 import { IUserRepository } from '@modules/user/domain/repositories/IUserRepository';
 import { User } from '@modules/user/domain/entities/User';
@@ -32,9 +34,7 @@ describe('CreateUser Use Case', () => {
       expect(result.user.email).toBe('test@example.com');
       expect(result.user.passwordHash).toBeDefined();
       expect(result.user.passwordHash).not.toBe('SecurePassword123'); // Devrait être hashé
-      expect(mockUserRepository.save).toHaveBeenCalledWith(
-        expect.any(User)
-      );
+      expect(mockUserRepository.save).toHaveBeenCalledWith(expect.any(User));
     });
 
     it('devrait hasher le mot de passe', async () => {
@@ -50,7 +50,7 @@ describe('CreateUser Use Case', () => {
       expect(result.user.passwordHash).toMatch(/^\$2[ab]\$/);
     });
 
-    it('devrait normaliser l\'email en minuscules', async () => {
+    it("devrait normaliser l'email en minuscules", async () => {
       mockUserRepository.emailExists.mockResolvedValue(false);
       mockUserRepository.save.mockResolvedValue();
 
@@ -88,7 +88,7 @@ describe('CreateUser Use Case', () => {
       ).rejects.toThrow('au moins 8 caractères');
     });
 
-    it('devrait rejeter si l\'email existe déjà', async () => {
+    it("devrait rejeter si l'email existe déjà", async () => {
       mockUserRepository.emailExists.mockResolvedValue(true);
 
       await expect(
@@ -107,23 +107,28 @@ describe('CreateUser Use Case', () => {
   });
 
   describe('Edge cases', () => {
-    it.each([null, undefined, ''])('devrait rejeter email: %p', async (email) => {
-      await expect(
-        createUser.execute({
-          email: email as string,
-          password: 'SecurePassword123',
-        })
-      ).rejects.toThrow();
-    });
+    it.each([null, undefined, ''])(
+      'devrait rejeter email: %p',
+      async (email) => {
+        await expect(
+          createUser.execute({
+            email: email as string,
+            password: 'SecurePassword123',
+          })
+        ).rejects.toThrow();
+      }
+    );
 
-    it.each([null, undefined, ''])('devrait rejeter password: %p', async (pwd) => {
-      await expect(
-        createUser.execute({
-          email: 'test@example.com',
-          password: pwd as string,
-        })
-      ).rejects.toThrow();
-    });
+    it.each([null, undefined, ''])(
+      'devrait rejeter password: %p',
+      async (pwd) => {
+        await expect(
+          createUser.execute({
+            email: 'test@example.com',
+            password: pwd as string,
+          })
+        ).rejects.toThrow();
+      }
+    );
   });
 });
-

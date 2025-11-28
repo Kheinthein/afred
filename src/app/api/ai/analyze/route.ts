@@ -4,24 +4,36 @@ import { AnalyzeText } from '@modules/ai-assistant/domain/use-cases/AnalyzeText'
 import { AnalyzeTextDTOSchema } from '@modules/ai-assistant/application/dtos/AnalyzeTextDTO';
 import { authenticateRequest } from '@/app/api/middleware/auth';
 import { handleError } from '@/app/api/middleware/errorHandler';
+import {
+  rateLimitMiddleware,
+  RATE_LIMIT_CONFIGS,
+} from '@/app/api/middleware/rateLimit';
 import { logger } from '@shared/infrastructure/logger/WinstonLogger';
 
 /**
  * POST /api/ai/analyze
  * Analyse un document avec l'IA
+ * Rate limit: 10 requêtes par minute
  */
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const startTime = performance.now();
 
   try {
-    // 1. Authentifier
-    const { userId } = await authenticateRequest(request);
+    // 1. Vérifier le rate limit (strict pour IA)
+    const rateLimitResponse = rateLimitMiddleware(
+      request,
+      RATE_LIMIT_CONFIGS.ai
+    );
+    if (rateLimitResponse) return rateLimitResponse;
 
-    // 2. Parser et valider le body
-    const body = await request.json();
+    // 2. Authentifier
+    const { userId } = authenticateRequest(request);
+
+    // 3. Parser et valider le body
+    const body: unknown = await request.json();
     const data = AnalyzeTextDTOSchema.parse(body);
 
-    // 3. Analyser le document
+    // 4. Analyser le document
     const analyzeText = container.get<AnalyzeText>(AnalyzeText);
     const result = await analyzeText.execute({
       documentId: data.documentId,
@@ -29,7 +41,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       analysisType: data.analysisType,
     });
 
-    // 4. Logger l'analyse
+    // 5. Logger l'analyse
     const duration = performance.now() - startTime;
     logger.info({
       action: 'ai.analyze',
@@ -40,7 +52,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       duration,
     });
 
-    // 5. Retourner la réponse
+    // 6. Retourner la réponse
     return NextResponse.json({
       success: true,
       data: {
@@ -68,4 +80,3 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return handleError(error);
   }
 }
-

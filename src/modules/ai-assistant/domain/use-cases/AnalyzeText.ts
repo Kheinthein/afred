@@ -2,7 +2,11 @@ import { IAIServicePort } from '../repositories/IAIServicePort';
 import { IAIAnalysisRepository } from '../repositories/IAIAnalysisRepository';
 import { IDocumentRepository } from '@modules/document/domain/repositories/IDocumentRepository';
 import { AIAnalysis } from '../entities/AIAnalysis';
-import { NotFoundError, UnauthorizedError, ValidationError } from '@shared/errors';
+import {
+  NotFoundError,
+  UnauthorizedError,
+  ValidationError,
+} from '@shared/errors';
 import { AnalysisType } from '@shared/types';
 
 export interface AnalyzeTextInput {
@@ -44,7 +48,7 @@ export class AnalyzeText {
     // 2. Vérifier les permissions
     if (document.userId !== input.userId) {
       throw new UnauthorizedError(
-        'Vous n\'avez pas la permission d\'analyser ce document'
+        "Vous n'avez pas la permission d'analyser ce document"
       );
     }
 
@@ -82,10 +86,12 @@ export class AnalyzeText {
         break;
       }
 
-      default:
+      default: {
+        const exhaustiveCheck: never = input.analysisType;
         throw new ValidationError(
-          `Type d'analyse non supporté: ${input.analysisType}`
+          `Type d'analyse non supporté: ${String(exhaustiveCheck)}`
         );
+      }
     }
 
     // 4. Créer l'entité AIAnalysis
@@ -115,4 +121,3 @@ export class AnalyzeText {
     return `analysis_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   }
 }
-

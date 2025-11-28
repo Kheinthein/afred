@@ -1,6 +1,8 @@
 import { Document } from '@modules/document/domain/entities/Document';
 import { WritingStyle } from '@modules/document/domain/entities/WritingStyle';
 import { IDocumentRepository } from '@modules/document/domain/repositories/IDocumentRepository';
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { DeleteDocument } from '@modules/document/domain/use-cases/DeleteDocument';
 import { DocumentContent } from '@modules/document/domain/value-objects/DocumentContent';
 import { NotFoundError, UnauthorizedError } from '@shared/errors';
@@ -51,7 +53,7 @@ describe('DeleteDocument Use Case', () => {
   });
 
   describe('Erreurs', () => {
-    it('devrait rejeter si le document n\'existe pas', async () => {
+    it("devrait rejeter si le document n'existe pas", async () => {
       mockDocumentRepository.findById.mockResolvedValue(null);
 
       await expect(
@@ -62,7 +64,7 @@ describe('DeleteDocument Use Case', () => {
       ).rejects.toThrow(NotFoundError);
     });
 
-    it('devrait rejeter si l\'utilisateur n\'est pas le propriétaire', async () => {
+    it("devrait rejeter si l'utilisateur n'est pas le propriétaire", async () => {
       mockDocumentRepository.findById.mockResolvedValue(existingDocument);
 
       await expect(
@@ -74,4 +76,3 @@ describe('DeleteDocument Use Case', () => {
     });
   });
 });
-

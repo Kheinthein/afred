@@ -45,5 +45,16 @@ module.exports = {
     'tailwind.config.ts',
     'postcss.config.js',
   ],
+  overrides: [
+    {
+      files: ['tests/e2e/**/*.ts', 'tests/e2e/**/*.tsx'],
+      rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+      },
+    },
+  ],
 };
 

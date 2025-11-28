@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { AuthenticateUser } from '@modules/user/domain/use-cases/AuthenticateUser';
 import { IUserRepository } from '@modules/user/domain/repositories/IUserRepository';
 import { User } from '@modules/user/domain/entities/User';
@@ -43,7 +45,7 @@ describe('AuthenticateUser Use Case', () => {
       expect(result.user.email).toBe('test@example.com');
     });
 
-    it('devrait accepter l\'email en majuscules', async () => {
+    it("devrait accepter l'email en majuscules", async () => {
       const passwordHash = await bcrypt.hash('SecurePassword123', 10);
       const user = new User(
         'user-123',
@@ -67,8 +69,8 @@ describe('AuthenticateUser Use Case', () => {
     });
   });
 
-  describe('Erreurs d\'authentification', () => {
-    it('devrait rejeter si l\'utilisateur n\'existe pas', async () => {
+  describe("Erreurs d'authentification", () => {
+    it("devrait rejeter si l'utilisateur n'existe pas", async () => {
       mockUserRepository.findByEmail.mockResolvedValue(null);
 
       await expect(
@@ -140,14 +142,16 @@ describe('AuthenticateUser Use Case', () => {
       ).rejects.toThrow();
     });
 
-    it.each([null, undefined, ''])('devrait rejeter password: %p', async (pwd) => {
-      await expect(
-        authenticateUser.execute({
-          email: 'test@example.com',
-          password: pwd as string,
-        })
-      ).rejects.toThrow();
-    });
+    it.each([null, undefined, ''])(
+      'devrait rejeter password: %p',
+      async (pwd) => {
+        await expect(
+          authenticateUser.execute({
+            email: 'test@example.com',
+            password: pwd as string,
+          })
+        ).rejects.toThrow();
+      }
+    );
   });
 });
-

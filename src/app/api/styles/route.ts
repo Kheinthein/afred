@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@shared/infrastructure/database/prisma';
 import { handleError } from '@/app/api/middleware/errorHandler';
 
@@ -6,7 +6,7 @@ import { handleError } from '@/app/api/middleware/errorHandler';
  * GET /api/styles
  * Récupère tous les styles d'écriture disponibles
  */
-export async function GET(request: NextRequest): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   try {
     // Vérifier que DATABASE_URL est défini
     if (!process.env.DATABASE_URL) {

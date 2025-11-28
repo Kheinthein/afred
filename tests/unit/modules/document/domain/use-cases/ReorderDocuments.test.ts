@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { Document } from '@modules/document/domain/entities/Document';
 import { WritingStyle } from '@modules/document/domain/entities/WritingStyle';
 import { IDocumentRepository } from '@modules/document/domain/repositories/IDocumentRepository';
@@ -23,8 +25,28 @@ describe('ReorderDocuments Use Case', () => {
 
     style = new WritingStyle('style-1', 'Roman', 'Style roman');
     docs = [
-      new Document('doc-1', 'user-1', 'Doc 1', new DocumentContent('Texte 1'), style, 1, new Date(), new Date(), 0),
-      new Document('doc-2', 'user-1', 'Doc 2', new DocumentContent('Texte 2'), style, 1, new Date(), new Date(), 1),
+      new Document(
+        'doc-1',
+        'user-1',
+        'Doc 1',
+        new DocumentContent('Texte 1'),
+        style,
+        1,
+        new Date(),
+        new Date(),
+        0
+      ),
+      new Document(
+        'doc-2',
+        'user-1',
+        'Doc 2',
+        new DocumentContent('Texte 2'),
+        style,
+        1,
+        new Date(),
+        new Date(),
+        1
+      ),
     ];
 
     mockDocumentRepository.findByUserId.mockResolvedValue(docs);
@@ -37,10 +59,13 @@ describe('ReorderDocuments Use Case', () => {
       documentIds: ['doc-2', 'doc-1'],
     });
 
-    expect(mockDocumentRepository.updateSortOrders).toHaveBeenCalledWith('user-1', [
-      { id: 'doc-2', sortOrder: 0 },
-      { id: 'doc-1', sortOrder: 1 },
-    ]);
+    expect(mockDocumentRepository.updateSortOrders).toHaveBeenCalledWith(
+      'user-1',
+      [
+        { id: 'doc-2', sortOrder: 0 },
+        { id: 'doc-1', sortOrder: 1 },
+      ]
+    );
   });
 
   it('devrait rejeter si la liste contient des doublons', async () => {
@@ -73,5 +98,3 @@ describe('ReorderDocuments Use Case', () => {
     expect(mockDocumentRepository.updateSortOrders).not.toHaveBeenCalled();
   });
 });
-
-

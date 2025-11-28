@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { Document } from '@modules/document/domain/entities/Document';
 import { WritingStyle } from '@modules/document/domain/entities/WritingStyle';
 import { IDocumentRepository } from '@modules/document/domain/repositories/IDocumentRepository';
@@ -24,7 +26,7 @@ describe('GetUserDocuments Use Case', () => {
   });
 
   describe('Cas nominaux', () => {
-    it('devrait retourner tous les documents d\'un utilisateur', async () => {
+    it("devrait retourner tous les documents d'un utilisateur", async () => {
       const docs = [
         new Document(
           'doc-1',
@@ -57,7 +59,9 @@ describe('GetUserDocuments Use Case', () => {
       expect(result.documents).toHaveLength(2);
       expect(result.documents[0].title).toBe('Document 1');
       expect(result.documents[1].title).toBe('Document 2');
-      expect(mockDocumentRepository.findByUserId).toHaveBeenCalledWith('user-123');
+      expect(mockDocumentRepository.findByUserId).toHaveBeenCalledWith(
+        'user-123'
+      );
     });
 
     it('devrait retourner un tableau vide si aucun document', async () => {
@@ -70,7 +74,7 @@ describe('GetUserDocuments Use Case', () => {
       expect(result.documents).toHaveLength(0);
     });
 
-    it('devrait retourner uniquement les documents de l\'utilisateur', async () => {
+    it("devrait retourner uniquement les documents de l'utilisateur", async () => {
       const userDocs = [
         new Document(
           'doc-1',
@@ -97,4 +101,3 @@ describe('GetUserDocuments Use Case', () => {
     });
   });
 });
-

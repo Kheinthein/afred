@@ -2,7 +2,11 @@
 
 import { SortableDocumentCard } from '@components/SortableDocumentCard';
 import { DndContext, type DragEndEvent, closestCenter } from '@dnd-kit/core';
-import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { documentService } from '@shared/services/documentService';
 import { styleService } from '@shared/services/styleService';
 import type { DocumentDTO } from '@shared/types';
@@ -23,9 +27,13 @@ export default function DocumentsPage(): JSX.Element {
     queryFn: () => styleService.list(),
   });
 
-  const documents = useMemo<DocumentDTO[]>(() => documentsData ?? [], [documentsData]);
+  const documents = useMemo<DocumentDTO[]>(
+    () => documentsData ?? [],
+    [documentsData]
+  );
 
-  const [orderedDocuments, setOrderedDocuments] = useState<DocumentDTO[]>(documents);
+  const [orderedDocuments, setOrderedDocuments] =
+    useState<DocumentDTO[]>(documents);
   useEffect(() => {
     if (!documentsData) return;
     setOrderedDocuments(documentsData);
@@ -42,23 +50,31 @@ export default function DocumentsPage(): JSX.Element {
           'Commencez votre histoire ici. Décrivez le contexte, vos personnages ou l’idée générale pour que l’IA puisse vous aider 🍀',
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['documents'] });
+      void queryClient.invalidateQueries({ queryKey: ['documents'] });
       setForm({ title: '', styleId: '' });
       setCreationError(null);
     },
     onError: (error: unknown) => {
-      setCreationError(error instanceof Error ? error.message : "Impossible de créer le document");
+      setCreationError(
+        error instanceof Error
+          ? error.message
+          : 'Impossible de créer le document'
+      );
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => documentService.remove(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['documents'] }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['documents'] });
+    },
   });
 
   const reorderMutation = useMutation({
     mutationFn: (documentIds: string[]) => documentService.reorder(documentIds),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ['documents'] }),
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: ['documents'] });
+    },
   });
 
   const handleDragEnd = (event: DragEndEvent): void => {
@@ -83,12 +99,18 @@ export default function DocumentsPage(): JSX.Element {
   return (
     <div className="space-y-8">
       <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900">Nouveau document</h2>
-        <p className="text-sm text-gray-500">Choisissez un titre et un style pour commencer.</p>
+        <h2 className="text-lg font-semibold text-gray-900">
+          Nouveau document
+        </h2>
+        <p className="text-sm text-gray-500">
+          Choisissez un titre et un style pour commencer.
+        </p>
 
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Titre</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Titre
+            </label>
             <input
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
@@ -97,7 +119,9 @@ export default function DocumentsPage(): JSX.Element {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Style</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Style
+            </label>
             <select
               value={form.styleId}
               onChange={(e) => setForm({ ...form, styleId: e.target.value })}
@@ -116,24 +140,30 @@ export default function DocumentsPage(): JSX.Element {
         <div className="mt-4 space-y-2">
           <button
             onClick={() => createMutation.mutate()}
-            disabled={!form.title || !form.styleId || createMutation.isLoading}
+            disabled={!form.title || !form.styleId || createMutation.isPending}
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {createMutation.isLoading ? 'Création...' : 'Créer'}
+            {createMutation.isPending ? 'Création...' : 'Créer'}
           </button>
-          {creationError && <p className="text-sm text-red-600">{creationError}</p>}
+          {creationError && (
+            <p className="text-sm text-red-600">{creationError}</p>
+          )}
         </div>
       </section>
 
       <section>
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-gray-900">Mes documents</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">
+              Mes documents
+            </h2>
             <p className="text-sm text-gray-500">
               {documents.length} document{documents.length > 1 ? 's' : ''}
             </p>
             {reorderMutation.isPending && (
-              <p className="text-xs text-blue-600">Enregistrement de l&apos;ordre...</p>
+              <p className="text-xs text-blue-600">
+                Enregistrement de l&apos;ordre...
+              </p>
             )}
           </div>
         </div>
@@ -145,15 +175,24 @@ export default function DocumentsPage(): JSX.Element {
             Aucun document pour l&apos;instant. Créez-en un nouveau !
           </div>
         ) : (
-          <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-            <SortableContext items={orderedDocuments.map((doc) => doc.id)} strategy={verticalListSortingStrategy}>
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={orderedDocuments.map((doc) => doc.id)}
+              strategy={verticalListSortingStrategy}
+            >
               <div className="grid gap-4">
                 {orderedDocuments.map((doc) => (
                   <SortableDocumentCard
                     key={doc.id}
                     document={doc}
                     onDelete={(id) => deleteMutation.mutate(id)}
-                    isDeleting={deleteMutation.isLoading && deleteMutation.variables === doc.id}
+                    isDeleting={
+                      deleteMutation.isPending &&
+                      deleteMutation.variables === doc.id
+                    }
                   />
                 ))}
               </div>

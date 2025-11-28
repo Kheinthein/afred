@@ -1,6 +1,8 @@
 import { Document } from '@modules/document/domain/entities/Document';
 import { WritingStyle } from '@modules/document/domain/entities/WritingStyle';
 import { IDocumentRepository } from '@modules/document/domain/repositories/IDocumentRepository';
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { UpdateDocument } from '@modules/document/domain/use-cases/UpdateDocument';
 import { DocumentContent } from '@modules/document/domain/value-objects/DocumentContent';
 import { NotFoundError, UnauthorizedError } from '@shared/errors';
@@ -49,7 +51,9 @@ describe('UpdateDocument Use Case', () => {
 
       expect(result.document.content.text).toBe('Nouveau contenu');
       expect(result.document.version).toBe(2);
-      expect(mockDocumentRepository.save).toHaveBeenCalledWith(existingDocument);
+      expect(mockDocumentRepository.save).toHaveBeenCalledWith(
+        existingDocument
+      );
     });
 
     it('devrait mettre à jour uniquement le titre', async () => {
@@ -101,7 +105,7 @@ describe('UpdateDocument Use Case', () => {
   });
 
   describe('Erreurs', () => {
-    it('devrait rejeter si le document n\'existe pas', async () => {
+    it("devrait rejeter si le document n'existe pas", async () => {
       mockDocumentRepository.findById.mockResolvedValue(null);
 
       await expect(
@@ -113,7 +117,7 @@ describe('UpdateDocument Use Case', () => {
       ).rejects.toThrow(NotFoundError);
     });
 
-    it('devrait rejeter si l\'utilisateur n\'est pas le propriétaire', async () => {
+    it("devrait rejeter si l'utilisateur n'est pas le propriétaire", async () => {
       mockDocumentRepository.findById.mockResolvedValue(existingDocument);
 
       await expect(
@@ -137,4 +141,3 @@ describe('UpdateDocument Use Case', () => {
     });
   });
 });
-

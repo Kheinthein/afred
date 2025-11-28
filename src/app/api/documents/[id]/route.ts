@@ -23,10 +23,12 @@ export async function GET(
 ): Promise<NextResponse> {
   try {
     // 1. Authentifier
-    const { userId } = await authenticateRequest(request);
+    const { userId } = authenticateRequest(request);
 
     // 2. Récupérer le document
-    const documentRepo = container.get<IDocumentRepository>('IDocumentRepository');
+    const documentRepo = container.get<IDocumentRepository>(
+      'IDocumentRepository'
+    );
     const document = await documentRepo.findById(params.id);
 
     if (!document) {
@@ -92,10 +94,10 @@ export async function PUT(
 ): Promise<NextResponse> {
   try {
     // 1. Authentifier
-    const { userId } = await authenticateRequest(request);
+    const { userId } = authenticateRequest(request);
 
     // 2. Parser et valider le body
-    const body = await request.json();
+    const body: unknown = await request.json();
     const data = UpdateDocumentDTOSchema.parse(body);
 
     // 3. Mettre à jour le document
@@ -137,7 +139,7 @@ export async function DELETE(
 ): Promise<NextResponse> {
   try {
     // 1. Authentifier
-    const { userId } = await authenticateRequest(request);
+    const { userId } = authenticateRequest(request);
 
     // 2. Supprimer le document
     const deleteDocument = container.get<DeleteDocument>(DeleteDocument);
@@ -155,4 +157,3 @@ export async function DELETE(
     return handleError(error);
   }
 }
-

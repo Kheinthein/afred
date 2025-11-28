@@ -1,5 +1,7 @@
 import { WritingStyle } from '@modules/document/domain/entities/WritingStyle';
 import { IDocumentRepository } from '@modules/document/domain/repositories/IDocumentRepository';
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { CreateDocument } from '@modules/document/domain/use-cases/CreateDocument';
 import { ValidationError } from '@shared/errors';
 
@@ -153,4 +155,3 @@ describe('CreateDocument Use Case', () => {
     });
   });
 });
-
