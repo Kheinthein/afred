@@ -49,6 +49,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
+# Create logs directory with proper permissions
+RUN mkdir -p /app/logs && chown -R nextjs:nodejs /app/logs
+
 USER nextjs
 
 EXPOSE 3000
