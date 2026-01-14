@@ -36,7 +36,8 @@ describe('GetUserDocuments Use Case', () => {
           mockStyle,
           1,
           new Date(),
-          new Date()
+          new Date(),
+          1
         ),
         new Document(
           'doc-2',
@@ -46,7 +47,8 @@ describe('GetUserDocuments Use Case', () => {
           mockStyle,
           1,
           new Date(),
-          new Date()
+          new Date(),
+          0
         ),
       ];
 
