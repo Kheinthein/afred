@@ -99,7 +99,8 @@ model ChatMessage {
   content        String
   createdAt      DateTime         @default(now())
   
-  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)  @@index([conversationId])
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  @@index([conversationId])
   @@index([conversationId, createdAt])
   @@map("chat_messages")
 }
@@ -173,3 +174,4 @@ model DocumentTemplate {
   @@index([isPublic])
   @@map("document_templates")
 }
+
