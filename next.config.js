@@ -3,12 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   // swcMinify est activé par défaut dans Next.js 16
   output: 'standalone', // Enable standalone output for Docker
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
-  },
-  webpack: (config) => {
-    config.externals = [...(config.externals || []), { 'utf-8-validate': 'commonjs utf-8-validate', 'bufferutil': 'commonjs bufferutil' }];
-    return config;
+  serverExternalPackages: ['@prisma/client', 'bcryptjs'],
+  turbopack: {
+    // Configuration Turbopack vide pour Next.js 16
   },
   // S'assurer que les variables d'environnement sont chargées
   env: {

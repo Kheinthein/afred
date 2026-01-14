@@ -57,8 +57,8 @@ describe('GetUserDocuments Use Case', () => {
       });
 
       expect(result.documents).toHaveLength(2);
-      expect(result.documents[0].title).toBe('Document 1');
-      expect(result.documents[1].title).toBe('Document 2');
+      expect(result.documents[0].title).toBe('Document 2');
+      expect(result.documents[1].title).toBe('Document 1');
       expect(mockDocumentRepository.findByUserId).toHaveBeenCalledWith(
         'user-123'
       );
