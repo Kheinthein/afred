@@ -28,7 +28,24 @@ export class DocumentRepository implements IDocumentRepository {
       orderBy: [{ sortOrder: 'asc' }, { updatedAt: 'desc' }],
     });
 
-    return docs.map((doc) => this.toDomain(doc));
+    return docs.map(
+      (doc: {
+        id: string;
+        userId: string;
+        title: string;
+        content: string;
+        wordCount: number;
+        version: number;
+        sortOrder: bigint;
+        createdAt: Date;
+        updatedAt: Date;
+        style: {
+          id: string;
+          name: string;
+          description: string;
+        };
+      }) => this.toDomain(doc)
+    );
   }
 
   async save(document: Document): Promise<void> {

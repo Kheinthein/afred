@@ -29,7 +29,17 @@ export class AIAnalysisRepository implements IAIAnalysisRepository {
       orderBy: { createdAt: 'desc' },
     });
 
-    return analyses.map((a) => this.toDomain(a));
+    return analyses.map(
+      (a: {
+        id: string;
+        documentId: string;
+        type: string;
+        suggestions: string;
+        confidence: number;
+        metadata: string | null;
+        createdAt: Date;
+      }) => this.toDomain(a)
+    );
   }
 
   async findLatestByDocumentAndType(

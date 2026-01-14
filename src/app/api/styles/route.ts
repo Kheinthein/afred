@@ -29,11 +29,17 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({
       success: true,
       data: {
-        styles: styles.map((style) => ({
-          id: style.id,
-          name: style.name,
-          description: style.description,
-        })),
+        styles: styles.map(
+          (style: {
+            id: string;
+            name: string;
+            description: string | null;
+          }) => ({
+            id: style.id,
+            name: style.name,
+            description: style.description,
+          })
+        ),
       },
     });
   } catch (error) {
