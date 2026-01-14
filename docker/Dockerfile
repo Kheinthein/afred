@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 # Disable husky install in Docker
-RUN npm ci --only=production --ignore-scripts
+RUN npm ci --only=production --ignore-scripts --legacy-peer-deps
 
 # Stage 2: Build
 FROM node:20-alpine AS builder
@@ -15,7 +15,7 @@ RUN apk add --no-cache openssl
 
 COPY package*.json ./
 # Disable husky install in Docker
-RUN npm ci --ignore-scripts
+RUN npm ci --ignore-scripts --legacy-peer-deps
 
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
