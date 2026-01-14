@@ -9,8 +9,6 @@ interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-const isE2ETest = process.env.NEXT_PUBLIC_E2E === 'true';
-
 export default function DashboardLayout({
   children,
 }: DashboardLayoutProps): React.ReactElement | null {
@@ -19,12 +17,12 @@ export default function DashboardLayout({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated && !isE2ETest) {
+    if (!isAuthenticated) {
       router.replace('/login');
     }
   }, [isAuthenticated, router]);
 
-  if (!isAuthenticated && !isE2ETest) {
+  if (!isAuthenticated) {
     return null;
   }
 
