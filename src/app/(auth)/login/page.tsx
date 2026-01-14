@@ -1,7 +1,7 @@
 import { AuthForm } from '@components/AuthForm';
 import Link from 'next/link';
 
-export default function LoginPage(): JSX.Element {
+export default function LoginPage() {
   return (
     <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg sm:rounded-2xl sm:p-8">
       <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">

@@ -17,7 +17,7 @@ export function AIAnalysisPanel({
   loading,
   analysis,
   onAnalyze,
-}: AIAnalysisPanelProps): JSX.Element {
+}: AIAnalysisPanelProps) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
       <h3 className="text-base font-semibold text-gray-900 sm:text-lg">

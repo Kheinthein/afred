@@ -13,7 +13,7 @@ export function SortableDocumentCard({
   document,
   onDelete,
   isDeleting,
-}: SortableDocumentCardProps): JSX.Element {
+}: SortableDocumentCardProps) {
   const {
     attributes,
     listeners,

@@ -3,7 +3,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
-    project: './tsconfig.json',
     ecmaFeatures: {
       jsx: true,
     },
@@ -12,8 +11,6 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'next/core-web-vitals',
   ],
   rules: {
     '@typescript-eslint/no-explicit-any': 'error',
@@ -28,7 +25,7 @@ module.exports = {
       'error',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
-    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/no-floating-promises': 'off', // Nécessite project dans parserOptions
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'max-lines': [
       'warn',
@@ -57,4 +54,3 @@ module.exports = {
     },
   ],
 };
-

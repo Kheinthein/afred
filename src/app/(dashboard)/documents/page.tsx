@@ -13,7 +13,7 @@ import type { DocumentDTO } from '@shared/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 
-export default function DocumentsPage(): JSX.Element {
+export default function DocumentsPage() {
   const queryClient = useQueryClient();
   const [form, setForm] = useState({ title: '', styleId: '' });
 

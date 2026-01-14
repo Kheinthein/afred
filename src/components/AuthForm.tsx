@@ -19,7 +19,7 @@ interface AuthFormProps {
   mode: 'login' | 'register';
 }
 
-export function AuthForm({ mode }: AuthFormProps): JSX.Element {
+export function AuthForm({ mode }: AuthFormProps) {
   const {
     register,
     handleSubmit,

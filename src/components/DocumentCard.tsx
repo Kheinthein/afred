@@ -20,7 +20,7 @@ export function DocumentCard({
   dragHandleProps,
   isDragging,
   isDeleting,
-}: DocumentCardProps): JSX.Element {
+}: DocumentCardProps) {
   const [confirming, setConfirming] = useState(false);
 
   return (

@@ -13,7 +13,7 @@ const isE2ETest = process.env.NEXT_PUBLIC_E2E === 'true';
 
 export default function DashboardLayout({
   children,
-}: DashboardLayoutProps): JSX.Element | null {
+}: DashboardLayoutProps): React.ReactElement | null {
   const { isAuthenticated, user, logout } = useAuth();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

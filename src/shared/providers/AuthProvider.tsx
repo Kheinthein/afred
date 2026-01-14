@@ -34,7 +34,7 @@ interface AuthProviderProps {
 
 const STORAGE_KEY = 'alfred:auth';
 
-export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
+export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
 

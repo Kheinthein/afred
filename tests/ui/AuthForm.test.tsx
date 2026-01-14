@@ -1,5 +1,6 @@
 import { AuthForm } from '@components/AuthForm';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
 const mockLogin = jest.fn();

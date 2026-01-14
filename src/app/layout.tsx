@@ -18,7 +18,7 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+}) {
   return (
     <html lang="fr">
       <body className="min-h-screen bg-gray-50">

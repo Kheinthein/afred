@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-export default function DocumentDetailPage(): JSX.Element {
+export default function DocumentDetailPage() {
   const params = useParams<{ id: string }>();
   const documentId = params.id;
 

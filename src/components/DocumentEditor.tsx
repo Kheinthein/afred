@@ -12,7 +12,7 @@ interface DocumentEditorProps {
   document: DocumentDTO;
 }
 
-export function DocumentEditor({ document }: DocumentEditorProps): JSX.Element {
+export function DocumentEditor({ document }: DocumentEditorProps) {
   const [content, setContent] = useState(document.content);
   const [analysis, setAnalysis] = useState<AIAnalysisDTO | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);

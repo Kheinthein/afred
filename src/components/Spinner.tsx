@@ -8,7 +8,7 @@ const sizeMap: Record<Required<SpinnerProps>['size'], string> = {
   lg: 'h-12 w-12 border-4',
 };
 
-export function Spinner({ size = 'md' }: SpinnerProps): JSX.Element {
+export function Spinner({ size = 'md' }: SpinnerProps) {
   return (
     <span
       className={`inline-block animate-spin rounded-full border-solid border-blue-600 border-t-transparent ${sizeMap[size]}`}

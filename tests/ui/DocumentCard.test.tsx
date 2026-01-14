@@ -1,5 +1,6 @@
 import { DocumentCard } from '@components/DocumentCard';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/dom';
 
 jest.mock('next/link', () => ({
   __esModule: true,
