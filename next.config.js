@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+  // swcMinify est activé par défaut dans Next.js 16
   output: 'standalone', // Enable standalone output for Docker
   experimental: {
     serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],

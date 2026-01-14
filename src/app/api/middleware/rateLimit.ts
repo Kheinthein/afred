@@ -132,6 +132,16 @@ export function rateLimitMiddleware(
   request: NextRequest,
   config: RateLimitConfig = RATE_LIMIT_CONFIGS.standard
 ): NextResponse | null {
+  // Désactiver le rate limiting en mode test, CI, ou développement local
+  if (
+    process.env.NODE_ENV === 'test' ||
+    process.env.CI === 'true' ||
+    process.env.PLAYWRIGHT_TEST === 'true' ||
+    process.env.NODE_ENV === 'development'
+  ) {
+    return null;
+  }
+
   const identifier = getClientIdentifier(request);
   const { allowed, resetTime, remaining } = checkRateLimit(identifier, config);
 

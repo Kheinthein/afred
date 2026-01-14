@@ -24,6 +24,8 @@ Les tests End-to-End (E2E) avec Playwright simulent le comportement réel d'un u
 - ✅ Réorganisation par drag and drop
 - ✅ Navigation vers l'éditeur
 
+> ℹ️ **Note** : suite désactivée depuis le 2025-11-28 (UI documents en refonte).
+
 ### 3. **ai-analysis.spec.ts** - Analyse IA
 - ✅ Affichage du panel d'analyse IA
 - ✅ Analyse syntaxique
@@ -34,6 +36,10 @@ Les tests End-to-End (E2E) avec Playwright simulent le comportement réel d'un u
 - ✅ Désactivation des boutons pendant l'analyse
 - ✅ Compteur de mots en temps réel
 - ✅ Conservation du contenu après analyse
+
+> ℹ️ **Note** : depuis le 2025-11-28, cette suite est temporairement désactivée (`describe.skip`)
+> car l'interface du panneau IA change encore et entraîne trop de faux négatifs.
+> Elle sera réactivée une fois l'UI stabilisée ou quand un mock IA backend sera disponible.
 
 ## 🚀 Exécution des tests
 

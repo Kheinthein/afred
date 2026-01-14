@@ -97,35 +97,44 @@ export default function DocumentsPage(): JSX.Element {
   };
 
   return (
-    <div className="space-y-8">
-      <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900">
+    <div className="space-y-6 sm:space-y-8">
+      <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+        <h2 className="text-lg font-semibold text-gray-900 sm:text-xl">
           Nouveau document
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500">
           Choisissez un titre et un style pour commencer.
         </p>
 
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="new-document-title"
+            >
               Titre
             </label>
             <input
+              id="new-document-title"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 sm:text-base"
+              placeholder="Titre du document"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="new-document-style"
+            >
               Style
             </label>
             <select
+              id="new-document-style"
               value={form.styleId}
               onChange={(e) => setForm({ ...form, styleId: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 sm:text-base"
             >
               <option value="">Choisir un style</option>
               {styles.map((style) => (
@@ -137,41 +146,39 @@ export default function DocumentsPage(): JSX.Element {
           </div>
         </div>
 
-        <div className="mt-4 space-y-2">
+        <div className="mt-4">
           <button
             onClick={() => createMutation.mutate()}
             disabled={!form.title || !form.styleId || createMutation.isPending}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto sm:py-2"
           >
             {createMutation.isPending ? 'Création...' : 'Créer'}
           </button>
           {creationError && (
-            <p className="text-sm text-red-600">{creationError}</p>
+            <p className="mt-2 text-sm text-red-600">{creationError}</p>
           )}
         </div>
       </section>
 
       <section>
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900">
-              Mes documents
-            </h2>
-            <p className="text-sm text-gray-500">
-              {documents.length} document{documents.length > 1 ? 's' : ''}
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold text-gray-900 sm:text-2xl">
+            Mes documents
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">
+            {documents.length} document{documents.length > 1 ? 's' : ''}
+          </p>
+          {reorderMutation.isPending && (
+            <p className="mt-1 text-xs text-blue-600">
+              Enregistrement de l&apos;ordre...
             </p>
-            {reorderMutation.isPending && (
-              <p className="text-xs text-blue-600">
-                Enregistrement de l&apos;ordre...
-              </p>
-            )}
-          </div>
+          )}
         </div>
 
         {isLoading ? (
           <p className="text-gray-500">Chargement des documents...</p>
         ) : orderedDocuments.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
+          <div className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center text-gray-500 sm:p-10">
             Aucun document pour l&apos;instant. Créez-en un nouveau !
           </div>
         ) : (

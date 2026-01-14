@@ -75,10 +75,12 @@ jobs:
           name: alfred-coverage
 
   e2e:
-    name: E2E Tests (Optional)
+    name: E2E Tests
     runs-on: ubuntu-latest
     needs: test
     if: github.event_name == 'push'
+    # Permettre au job de continuer même si certains tests échouent
+    continue-on-error: false
 
     steps:
       - name: 📥 Checkout code
@@ -100,11 +102,13 @@ jobs:
         run: npm run db:push
         env:
           DATABASE_URL: file:./dev.db
+          JWT_SECRET: test-secret-e2e
 
       - name: 🌱 Seed database
         run: npm run db:seed
         env:
           DATABASE_URL: file:./dev.db
+          JWT_SECRET: test-secret-e2e
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps chromium
@@ -115,8 +119,21 @@ jobs:
           DATABASE_URL: file:./dev.db
           JWT_SECRET: test-secret-e2e
           AI_PROVIDER: openai
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'sk-test-fake-key' }}
           CI: true
+          NODE_ENV: test
+        # Timeout de 15 minutes pour les tests E2E
+        timeout-minutes: 15
+        # Continuer même si certains tests échouent (pour debug)
+        continue-on-error: false
+
+      - name: 📊 Upload JUnit test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-junit-results
+          path: test-results/junit.xml
+          retention-days: 30
 
       - name: 📸 Upload Playwright report
         uses: actions/upload-artifact@v4
@@ -126,7 +143,7 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: 📸 Upload test results
+      - name: 📸 Upload test results (screenshots, videos, traces)
         uses: actions/upload-artifact@v4
         if: failure()
         with:

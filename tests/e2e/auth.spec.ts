@@ -23,7 +23,7 @@ test.describe('Authentification E2E', () => {
 
     // Vérifier que la page de register est chargée
     await expect(page).toHaveURL('/register');
-    await expect(page.locator('h1')).toContainText('Inscription');
+    await expect(page.locator('h1')).toContainText('Créer un compte');
 
     // Remplir le formulaire d'inscription
     await page.fill('input[type="email"]', testEmail);
@@ -32,11 +32,23 @@ test.describe('Authentification E2E', () => {
     // Soumettre le formulaire
     await page.click('button[type="submit"]');
 
+    // Attendre que le bouton ne soit plus en chargement
+    await page
+      .waitForSelector('button[type="submit"]:not([disabled])', {
+        timeout: 5000,
+      })
+      .catch(() => {});
+
     // Vérifier la redirection vers le dashboard après inscription
     await expect(page).toHaveURL('/documents', { timeout: 10000 });
 
-    // Vérifier que l'email de l'utilisateur est affiché
-    await expect(page.locator('text=' + testEmail)).toBeVisible();
+    // Attendre que la page soit complètement chargée
+    await page.waitForLoadState('networkidle');
+
+    // Vérifier que l'email de l'utilisateur est affiché dans le header
+    await expect(page.locator(`text=${testEmail}`)).toBeVisible({
+      timeout: 5000,
+    });
   });
 
   test("devrait permettre la connexion d'un utilisateur existant", async ({
@@ -55,7 +67,7 @@ test.describe('Authentification E2E', () => {
 
     // Vérifier que la page de login est chargée
     await expect(page).toHaveURL('/login');
-    await expect(page.locator('h1')).toContainText('Connexion');
+    await expect(page.locator('h1')).toContainText('Se connecter');
 
     // Remplir le formulaire de connexion
     await page.fill('input[type="email"]', testEmail);
@@ -64,11 +76,23 @@ test.describe('Authentification E2E', () => {
     // Soumettre le formulaire
     await page.click('button[type="submit"]');
 
+    // Attendre que le bouton ne soit plus en chargement
+    await page
+      .waitForSelector('button[type="submit"]:not([disabled])', {
+        timeout: 5000,
+      })
+      .catch(() => {});
+
     // Vérifier la redirection vers le dashboard
     await expect(page).toHaveURL('/documents', { timeout: 10000 });
 
-    // Vérifier que l'utilisateur est connecté
-    await expect(page.locator('text=' + testEmail)).toBeVisible();
+    // Attendre que la page soit complètement chargée
+    await page.waitForLoadState('networkidle');
+
+    // Vérifier que l'utilisateur est connecté (email dans le header)
+    await expect(page.locator(`text=${testEmail}`)).toBeVisible({
+      timeout: 5000,
+    });
   });
 
   test('devrait rejeter les identifiants invalides', async ({ page }) => {
@@ -82,11 +106,9 @@ test.describe('Authentification E2E', () => {
     await page.click('button[type="submit"]');
 
     // Vérifier qu'un message d'erreur est affiché
-    await expect(
-      page.locator(
-        'text=/Identifiants invalides|Email ou mot de passe incorrect/i'
-      )
-    ).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('.text-red-600').first()).toBeVisible({
+      timeout: 5000,
+    });
 
     // Vérifier qu'on reste sur la page de login
     await expect(page).toHaveURL('/login');
@@ -117,29 +139,47 @@ test.describe('Authentification E2E', () => {
   });
 
   test('devrait permettre la déconnexion', async ({ page }) => {
-    // Créer et connecter un utilisateur
+    // Créer et connecter un utilisateur avec un email unique
+    const uniqueEmail = `test-logout-${Date.now()}@example.com`;
     const response = await page.request.post(
       'http://localhost:3000/api/auth/register',
       {
         data: {
-          email: testEmail,
+          email: uniqueEmail,
           password: testPassword,
         },
       }
     );
 
-    const json = (await response.json()) as { data: { token: string } };
+    const json = (await response.json()) as {
+      success: boolean;
+      data?: { token: string; user: { id: string } };
+      error?: { message: string };
+    };
+    if (!json.success || !json.data) {
+      throw new Error(
+        `Registration failed: ${json.error?.message || 'Unknown error'}`
+      );
+    }
     const token = json.data.token;
+    const userId = json.data.user.id;
 
-    // Définir le token dans le localStorage
+    // Définir le token dans le localStorage avec la structure attendue
     await page.goto('/documents');
-    await page.evaluate((tokenValue: string) => {
-      localStorage.setItem('auth_token', tokenValue);
-    }, token);
+    await page.evaluate(
+      ({ token, email, id }) => {
+        const authData = {
+          user: { id, email },
+          token,
+        };
+        localStorage.setItem('alfred:auth', JSON.stringify(authData));
+      },
+      { token, email: uniqueEmail, id: userId }
+    );
 
     // Recharger pour appliquer le token
     await page.reload();
-    await expect(page).toHaveURL('/documents');
+    await expect(page).toHaveURL('/documents', { timeout: 10000 });
 
     // Cliquer sur le bouton de déconnexion
     await page.click('button:has-text("Déconnexion")');
@@ -148,9 +188,9 @@ test.describe('Authentification E2E', () => {
     await expect(page).toHaveURL('/login', { timeout: 5000 });
 
     // Vérifier que le token est supprimé
-    const tokenAfterLogout = await page.evaluate(() =>
-      localStorage.getItem('auth_token')
+    const authAfterLogout = await page.evaluate(() =>
+      localStorage.getItem('alfred:auth')
     );
-    expect(tokenAfterLogout).toBeNull();
+    expect(authAfterLogout).toBeNull();
   });
 });

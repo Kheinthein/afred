@@ -1,11 +1,17 @@
 import { AuthProvider } from '@shared/providers/AuthProvider';
 import { QueryProvider } from '@shared/providers/QueryProvider';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: "Alfred - Assistant d'Écriture IA",
   description: "Application d'écriture avec assistant IA pour écrivains",
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
